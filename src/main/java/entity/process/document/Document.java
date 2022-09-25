@@ -1,16 +1,20 @@
 package entity.process.document;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.io.File;
 import java.util.Set;
 
 @Entity
 @Table(name = "documents")
+@NoArgsConstructor
+@Data
 public class Document {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     
     @Column
     private String title;
@@ -22,7 +26,7 @@ public class Document {
     private Set<Comment> comments;
     
     @Column
-    private File file;
+    private String file;
     
     @OneToMany
     @JoinTable(
@@ -30,6 +34,6 @@ public class Document {
     )
     private Set<Resource> resources;
     
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
     private DocumentType type;
 }

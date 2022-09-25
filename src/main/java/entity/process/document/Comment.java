@@ -1,21 +1,25 @@
 package entity.process.document;
 
 import entity.user.Client;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "comments")
+@NoArgsConstructor
+@Data
 public class Comment {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private String text;
     
-    @Column
+    @ManyToOne
     private Client author;
 }
 

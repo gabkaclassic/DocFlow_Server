@@ -6,22 +6,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
-@Table(name = "processes")
+@Table(name = "steps")
 @NoArgsConstructor
 @Data
-public class Process {
+public class Step {
+    
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+    
+    @Column
+    private String title;
     
     @OneToMany
     @JoinTable(
-            name = "process_steps"
+            name = "process_documents"
     )
-    private List<Step> steps;
+    private Set<Document> documents;
+    
+    @ManyToMany
+    @JoinTable(
+            name = "steps_participants"
+    )
+    private Set<Participant> participants;
 }

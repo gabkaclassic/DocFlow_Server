@@ -11,10 +11,9 @@ public class Client {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     
     @Column
-    @OneToOne
     private User account;
     
     @ManyToMany
