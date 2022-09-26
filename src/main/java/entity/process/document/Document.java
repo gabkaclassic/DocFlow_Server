@@ -20,18 +20,12 @@ public class Document {
     private String title;
     
     @OneToMany
-    @JoinTable(
-            name = "document_comments"
-    )
     private Set<Comment> comments;
     
     @Column
-    private String file;
+    private String path;
     
     @OneToMany
-    @JoinTable(
-            name = "document_resources"
-    )
     private Set<Resource> resources;
     
     @ManyToOne

@@ -1,12 +1,10 @@
 package entity.process;
 
 import entity.process.document.Document;
-import entity.user.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -14,7 +12,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class Step {
-    
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +26,6 @@ public class Step {
     )
     private Set<Document> documents;
     
-    @ManyToMany
-    @JoinTable(
-            name = "steps_participants"
-    )
-    private Set<Participant> participants;
+    @OneToOne
+    private Step nextStep;
 }

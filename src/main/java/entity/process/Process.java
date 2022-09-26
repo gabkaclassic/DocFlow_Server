@@ -1,13 +1,10 @@
 package entity.process;
 
-import entity.process.document.Document;
-import entity.user.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "processes")
@@ -20,8 +17,11 @@ public class Process {
     private Long id;
     
     @OneToMany
-    @JoinTable(
-            name = "process_steps"
-    )
     private List<Step> steps;
+    
+    @OneToOne
+    private Step currentStep;
+    
+    @ManyToOne
+    private Participant controller;
 }

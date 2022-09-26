@@ -1,13 +1,12 @@
 package entity.process;
 
 import entity.process.document.Document;
-import entity.user.Roles;
+import entity.user.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Table(name = "steps")
@@ -19,11 +18,13 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
+    @ManyToOne
+    private Client owner;
+    
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(
             name = "participant_document_rule",
             joinColumns = @JoinColumn(name = "participant_id")
     )
-    @MapKeyColumn(name="rules")
-    private Map<Document, Rules> rules;
+    private Map<Rules, Document> rules;
 }
