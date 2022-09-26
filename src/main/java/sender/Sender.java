@@ -53,6 +53,7 @@ public class Sender {
         file.createNewFile();
         var out = new FileOutputStream(file);
         out.write(result.getDocument());
+        out.close();
         client.close();
     }
     

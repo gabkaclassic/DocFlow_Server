@@ -31,4 +31,9 @@ public class UserService implements UserDetailsService {
         
         return true;
     }
+    
+    public void logout(String login) {
+        
+        repository.setOffline(login);
+    }
 }

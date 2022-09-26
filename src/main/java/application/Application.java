@@ -32,7 +32,7 @@ public class Application {
     public static void main(String[] args) throws IOException {
     
         SpringApplication.run(Application.class, args);
-        var sender = new Sender();
-        sender.defaultSend();
+//        var sender = new Sender();
+//        sender.defaultSend();
     }
 }

@@ -26,6 +26,9 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
     
+    @Column
+    private boolean online;
+    
     @OneToOne
     private Client client;
     
