@@ -26,6 +26,9 @@ public class Step {
     )
     private Set<Document> documents;
     
+    @ManyToMany
+    private Set<Participant> participants;
+    
     @OneToOne
     private Step nextStep;
 }

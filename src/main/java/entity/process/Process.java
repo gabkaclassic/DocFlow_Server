@@ -21,7 +21,4 @@ public class Process {
     
     @OneToOne
     private Step currentStep;
-    
-    @ManyToOne
-    private Participant controller;
 }

@@ -13,6 +13,10 @@ public interface UserRepository extends JpaRepository<User, Long>, CrudRepositor
     User findByUsername(String username);
     
     @Modifying
-    @Query("update User u set u.online = 'f' where u.username = :login")
-    void setOffline(String login);
+    @Query("update User u set u.online = 'f' where u.id = :id")
+    void logout(Long id);
+    
+    @Modifying
+    @Query("update User u set u.online = 't' where u.id = :id")
+    void login(Long id);
 }

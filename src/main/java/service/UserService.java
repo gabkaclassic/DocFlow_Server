@@ -32,8 +32,13 @@ public class UserService implements UserDetailsService {
         return true;
     }
     
-    public void logout(String login) {
+    public void logout(User user) {
         
-        repository.setOffline(login);
+        repository.logout(user.getId());
+    }
+    
+    public void login(User user) {
+        
+        repository.login(user.getId());
     }
 }

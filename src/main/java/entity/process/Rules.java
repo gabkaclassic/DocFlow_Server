@@ -1,5 +1,5 @@
 package entity.process;
 
 public enum Rules {
-    CHANGE, READ
+    CHANGE, READ, CONTROL
 }

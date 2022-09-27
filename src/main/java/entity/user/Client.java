@@ -1,12 +1,14 @@
 package entity.user;
 
 import entity.Team;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "clients")
+@Data
 public class Client {
     
     @Id
