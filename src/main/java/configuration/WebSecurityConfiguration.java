@@ -28,15 +28,14 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
     
-        security.authorizeHttpRequests()
-//                .antMatchers("/user/registry").permitAll().anyRequest().authenticated()
-                .antMatchers("/user/*").permitAll().anyRequest().authenticated()
-                .antMatchers("/*").permitAll().anyRequest().authenticated()
+        security.csrf().disable()
+                .authorizeHttpRequests()
+                .antMatchers("/**").permitAll().anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/user/login").permitAll().defaultSuccessUrl("/info").failureUrl("/failure/login")
+                .formLogin().loginPage("/user/login").permitAll().defaultSuccessUrl("/login/success").failureUrl("/user/login/failure")
                 .and().rememberMe()
                 .and().logout().logoutUrl("/user/logout").permitAll().deleteCookies("JSESSIONID")
-                .and().cors().and().csrf()
+                .and().cors()
                 .and().sessionManagement().invalidSessionUrl("/failure/session").maximumSessions(1).maxSessionsPreventsLogin(true);
         
         return security.build();
