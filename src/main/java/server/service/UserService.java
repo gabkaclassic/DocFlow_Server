@@ -1,0 +1,44 @@
+package server.service;
+
+import server.entity.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import server.repository.UserRepository;
+
+@Service
+public class UserService implements UserDetailsService {
+    
+    @Autowired
+    private UserRepository repository;
+    
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        
+        return repository.findByUsername(username);
+    }
+    
+    public boolean save(String login, String password) {
+     
+        if(repository.findByUsername(login) != null)
+            return false;
+        
+        var newUser = new User();
+        newUser.setUsername(login);
+        newUser.setPassword(password);
+        repository.save(newUser);
+        
+        return true;
+    }
+    
+    public void logout(User user) {
+        
+        repository.logout(user.getId());
+    }
+    
+    public void login(User user) {
+        
+        repository.login(user.getId());
+    }
+}
