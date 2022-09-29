@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.ApplicationPidFileWriter;
+import org.springframework.boot.web.context.WebServerPortFileWriter;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -14,24 +16,24 @@ import java.io.IOException;
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan(value = {
-        "controller",
-        "configuration",
-        "entity",
-        "repository",
-        "service"
+        "./server/controller",
+        "./server/configuration",
+        "./server/entity",
+        "./server/repository",
+        "./server/service"
 })
 @PropertySources({
-        @PropertySource("classpath:server.application.properties")
+        @PropertySource("classpath:application.properties")
 })
 
-@EnableJpaRepositories("repository")
-@EntityScan(basePackages = {"entity"})
+@EnableJpaRepositories("./server/repository")
+@EntityScan(basePackages = {"./server/entity"})
 public class Application {
     
     public static void main(String[] args) throws IOException {
     
-        SpringApplication.run(Application.class, args);
-//        var client.sender = new Sender();
-//        client.sender.defaultSend();
+        var application = new SpringApplication(Application.class);
+        application.addListeners(new WebServerPortFileWriter(), new ApplicationPidFileWriter());
+        application.run();
     }
 }
