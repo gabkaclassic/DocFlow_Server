@@ -17,6 +17,7 @@ import java.io.IOException;
 @EnableAutoConfiguration
 @ComponentScan(value = {
         "server/controller",
+        "server/controller/response",
         "server/configuration",
         "server/entity",
         "server/repository",

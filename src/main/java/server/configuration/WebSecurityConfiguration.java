@@ -14,6 +14,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.session.MapSessionRepository;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
 @EnableWebSecurity
@@ -36,8 +41,7 @@ public class WebSecurityConfiguration {
                 .and().rememberMe()
                 .and().logout().logoutUrl("/user/logout").permitAll().deleteCookies("JSESSIONID")
                 .and().cors()
-                .and().exceptionHandling()
-                .and().sessionManagement().invalidSessionUrl("/failure/session").maximumSessions(1).maxSessionsPreventsLogin(true);
+                .and().exceptionHandling();
         
         return security.build();
     }

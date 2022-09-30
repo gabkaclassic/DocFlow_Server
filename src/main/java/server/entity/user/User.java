@@ -1,6 +1,9 @@
 package server.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import server.entity.process.Participant;
@@ -12,7 +15,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 public class User implements UserDetails {
 
     @Id
@@ -21,6 +25,7 @@ public class User implements UserDetails {
     private Long id;
     
     @Column
+    @JsonIgnore
     private String password;
     
     @Column(unique = true)
@@ -29,7 +34,8 @@ public class User implements UserDetails {
     @Column
     private boolean online;
     
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JsonIgnore
     private Participant client;
     
     @ElementCollection(
@@ -64,21 +70,25 @@ public class User implements UserDetails {
         return username;
     }
     
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         
         return true;
     }
     
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         
         return !roles.contains(Roles.LOCKED);
     }
     
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         
         return true;
     }
     
+    @JsonIgnore
     public boolean isEnabled() {
         
         return true;
