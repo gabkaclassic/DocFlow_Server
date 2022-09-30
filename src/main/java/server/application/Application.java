@@ -16,18 +16,18 @@ import java.io.IOException;
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan(value = {
-        "./server/controller",
-        "./server/configuration",
-        "./server/entity",
-        "./server/repository",
-        "./server/service"
+        "server/controller",
+        "server/configuration",
+        "server/entity",
+        "server/repository",
+        "server/service"
 })
 @PropertySources({
         @PropertySource("classpath:application.properties")
 })
 
-@EnableJpaRepositories("./server/repository")
-@EntityScan(basePackages = {"./server/entity"})
+@EnableJpaRepositories("server/repository")
+@EntityScan(basePackages = {"server/entity"})
 public class Application {
     
     public static void main(String[] args) throws IOException {

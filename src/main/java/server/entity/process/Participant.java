@@ -1,13 +1,15 @@
 package server.entity.process;
 
-import server.entity.user.Client;
+import server.entity.Team;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import server.entity.user.User;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "steps")
+@Table(name = "participants")
 @NoArgsConstructor
 @Data
 public class Participant {
@@ -17,5 +19,8 @@ public class Participant {
     private long id;
     
     @ManyToOne
-    private Client owner;;
+    private User owner;
+    
+    @ManyToMany
+    private Set<Team> teams;
 }

@@ -3,6 +3,7 @@ package server.entity.user;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import server.entity.process.Participant;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -28,8 +29,8 @@ public class User implements UserDetails {
     @Column
     private boolean online;
     
-    @OneToOne
-    private Client client;
+    @OneToOne(fetch = FetchType.EAGER)
+    private Participant client;
     
     @ElementCollection(
         fetch = FetchType.EAGER,

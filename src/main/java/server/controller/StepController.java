@@ -17,6 +17,6 @@ public class StepController {
     public StepResponse getStepInfo(@AuthenticationPrincipal User user,
                                     @RequestParam Long stepId) {
         
-        return new StepResponse(stepId, user.getClient());
+        return new StepResponse(stepId, user);
     }
 }

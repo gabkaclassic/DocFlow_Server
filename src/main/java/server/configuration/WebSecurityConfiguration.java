@@ -32,7 +32,7 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests()
                 .antMatchers("/**").permitAll().anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/user/login").permitAll().defaultSuccessUrl("/login/success").failureUrl("/user/login/failure")
+                .formLogin().loginPage("/user/login").permitAll().defaultSuccessUrl("/user/login/success").failureUrl("/user/login/failure")
                 .and().rememberMe()
                 .and().logout().logoutUrl("/user/logout").permitAll().deleteCookies("JSESSIONID")
                 .and().cors()

@@ -1,8 +1,8 @@
 package server.entity.process.document;
 
-import server.entity.user.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import server.entity.process.Participant;
 
 import javax.persistence.*;
 
@@ -20,6 +20,6 @@ public class Comment {
     private String text;
     
     @ManyToOne
-    private Client author;
+    private Participant author;
 }
 

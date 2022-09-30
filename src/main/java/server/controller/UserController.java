@@ -8,6 +8,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import server.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -33,11 +37,11 @@ public class UserController {
     }
     
     @GetMapping("/login/success")
-    public String postLogin(@AuthenticationPrincipal User user) {
+    public void postLogin(@AuthenticationPrincipal User user, HttpServletResponse response) throws IOException {
         
         userService.login(user);
         
-        return "redirect:/info";
+        response.sendRedirect("/info");
     }
     
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)

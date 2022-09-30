@@ -1,12 +1,12 @@
 package server.controller.response;
 
-import server.entity.Team;
-import server.entity.process.Process;
-import server.entity.user.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import server.service.ClientService;
+import server.entity.Team;
+import server.entity.process.Participant;
+import server.entity.process.Process;
+import server.service.ParticipantService;
 
 import java.util.Set;
 
@@ -15,18 +15,18 @@ import java.util.Set;
 public class InfoResponse {
     
     @Autowired
-    private ClientService clientService;
+    private ParticipantService participantService;
     
-    private Client client;
+    private Participant participant;
     
     private Set<Team> teams;
     
     private Set<Process> processes;
     
-    public InfoResponse(Client client) {
-        setClient(client);
-        setTeams(client.getTeams());
-        setProcesses(clientService.getProcesses(client));
+    public InfoResponse(Participant participant) {
+        setParticipant(participant);
+        setTeams(participant.getTeams());
+        setProcesses(participantService.getProcesses(participant));
     }
     
 }

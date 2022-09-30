@@ -2,10 +2,10 @@ package server.controller.response;
 
 import server.entity.process.Participant;
 import server.entity.process.Step;
-import server.entity.user.Client;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import server.entity.user.User;
 import server.service.ParticipantService;
 import server.service.StepService;
 
@@ -23,8 +23,8 @@ public class StepResponse {
     
     private Participant participant;
 
-    public StepResponse(Long id, Client client) {
+    public StepResponse(Long id, User user) {
         setStep(stepService.findById(id));
-        setParticipant(participantService.findByClient(client));
+        setParticipant(participantService.findByOwner(user));
     }
 }

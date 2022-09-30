@@ -1,7 +1,7 @@
 package server.entity;
 
+import server.entity.process.Participant;
 import server.entity.process.Process;
-import server.entity.user.Client;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,7 +17,7 @@ public class Team {
     private Long id;
     
     @ManyToMany
-    private Set<Client> participants;
+    private Set<Participant> participants;
     
     @OneToMany
     private Set<Process> processes;

@@ -1,2 +1,9 @@
-package client.sender;public class Application {
+package client;
+
+public class Application {
+    
+    public static void main(String[] args) {
+    
+        System.out.println("Suka");
+    }
 }
