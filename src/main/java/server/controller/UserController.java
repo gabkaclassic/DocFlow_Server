@@ -15,8 +15,14 @@ import java.io.IOException;
 @RequestMapping("/user")
 public class UserController {
 
+    
+    private final UserService userService;
+    
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        
+        this.userService = userService;
+    }
     
     @PostMapping(value = "/registry", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response registration(@RequestParam String username,

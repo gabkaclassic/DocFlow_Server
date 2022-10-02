@@ -22,8 +22,12 @@ public class Document {
     @OneToMany
     private Set<Comment> comments;
     
+//    @Column
+//    private String path;
+    
     @Column
-    private String path;
+    @Lob
+    private byte[] file;
     
     @OneToMany
     private Set<Resource> resources;
