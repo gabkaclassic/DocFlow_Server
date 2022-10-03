@@ -28,10 +28,7 @@ public class UserController {
     public Response registration(@RequestParam String username,
                                  @RequestParam String password) {
         
-        var response = new Response();
-        userService.registration(username, password, response);
-        
-        return response;
+        return userService.registration(username, password);
     }
     
     @GetMapping("/login/success")
@@ -45,10 +42,7 @@ public class UserController {
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response logout(@AuthenticationPrincipal User user) {
         
-        var response = new Response();
-        userService.logout(user, response);
-        
-        return response;
+        return userService.logout(user);
     }
     
 }

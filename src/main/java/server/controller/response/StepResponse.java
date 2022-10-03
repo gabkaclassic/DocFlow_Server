@@ -1,5 +1,7 @@
 package server.controller.response;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import server.entity.process.Participant;
 import server.entity.process.Step;
 import lombok.Data;
@@ -10,36 +12,38 @@ import server.service.ParticipantService;
 import server.service.StepService;
 
 @Data
-@NoArgsConstructor
+@Builder
 public class StepResponse extends Response {
     
-    private static final String SUCCESS_LOAD = "Success loading of data";
-    private static final String STEP_DOES_NOT_EXISTS = "The step doesn't exists";
+    public static final String SUCCESS_LOAD = "Success loading of data";
+    public static final String STEP_DOES_NOT_EXISTS = "The step doesn't exists";
     
-    @Autowired
-    private StepService stepService;
+    private final StepService stepService;
     
-    @Autowired
-    private ParticipantService participantService;
+    private final ParticipantService participantService;
     
     private Step step;
     
     private Participant participant;
-
-    public StepResponse(Long id, User user) {
-        
-        var step = stepService.findById(id);
-        
-        if(step.isPresent()) {
     
-            setStep(step.get());
-            setParticipant(participantService.findByOwner(user));
-            setStatus(Response.STATUS_SUCCESS);
-            setMessage(SUCCESS_LOAD);
-        }
-        else {
-            setStatus(Response.STATUS_ERROR);
-            setMessage(STEP_DOES_NOT_EXISTS);
-        }
+    @Autowired
+    public StepResponse(StepService stepService, ParticipantService participantService) {
+        
+        this.stepService = stepService;
+        this.participantService = participantService;
+    }
+    
+    public StepResponse message(String message) {
+        
+        setMessage(message);
+        
+        return this;
+    }
+    
+    public StepResponse status(String status) {
+        
+        setStatus(status);
+        
+        return this;
     }
 }

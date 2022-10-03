@@ -19,9 +19,9 @@ public class Team {
     @Column
     private String title;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Participant> participants;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Process> processes;
 }
