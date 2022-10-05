@@ -1,9 +1,15 @@
 package client;
 
+import client.sender.Sender;
+
+import java.io.IOException;
+
 public class Application {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
     
-        System.out.println("Suka");
-    }
+        var sender = new Sender();
+        sender.registration("user123", "lalala123!");
+        
+        }
 }

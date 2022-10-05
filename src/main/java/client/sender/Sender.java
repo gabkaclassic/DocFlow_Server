@@ -1,63 +1,77 @@
 package client.sender;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
+import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
+import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
+import org.springframework.web.reactive.function.client.WebClient.UriSpec;
+import reactor.core.publisher.Mono;
 
-import java.io.File;
-
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Sender {
     
-    public void defaultSend() throws IOException {
+    private static final String BASE_URL = "http://localhost:8080/";
     
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpGet httpPost = new HttpGet("http://localhost:8080/file");
+    private String token;
     
-//        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//        builder.addBinaryBody(
-//                "file", new File("C:\\Users\\Kuzmi\\Documents\\Groups.xlsx"), ContentType.APPLICATION_OCTET_STREAM, "Groups.xlsx");
-//
-//        HttpEntity multipart = builder.build();
-//        httpPost.setEntity(multipart);
     
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("login", "John"));
-        params.add(new BasicNameValuePair("password", "pass"));
-        httpPost.setEntity(new UrlEncodedFormEntity(params));
-        CloseableHttpResponse response = client.execute(httpPost);
-        response = client.execute(httpPost);
-        System.out.println(response.getCode());
-        var mapper = new ObjectMapper();
-        var result = mapper.readValue(new String(response.getEntity().getContent().readAllBytes()), Response.class);
-        var file = new File("");
-        file.createNewFile();
-        var out = new FileOutputStream(file);
-        out.write(result.getDocument());
-        out.close();
-        client.close();
+    public Sender() {
+    
     }
     
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Response {
+    public void registration(String username, String password) throws IOException {
+        
+//        refreshToken();
+        var params = new LinkedMultiValueMap();
+        params.add("username", username);
+        params.add("password", password);
+        send("user/registry", params);
+        
+    }
     
-    private String title;
+//    public void logout() throws IOException {
+//
+//        List<NameValuePair> params = new ArrayList<>();
+//        params.add(new BasicNameValuePair("_csrf", token));
+//        var response = send(BASE_URL + "/user/logout", params);
+//
+//    }
     
-    private byte[] document;
+    private void refreshToken() throws IOException {
+        
+        send(BASE_URL, new LinkedMultiValueMap());
+    }
+    
+    private void send(String url,  LinkedMultiValueMap params) throws IOException {
+    
+        var client = WebClient.builder()
+                .baseUrl(BASE_URL)
+                .defaultCookie("cookieKey", "cookieValue")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultUriVariables(Collections.singletonMap("url", BASE_URL + url))
+                .build();
+    
+        UriSpec<RequestBodySpec> uriSpec = client.post();
+        RequestBodySpec bodySpec = uriSpec.uri(BASE_URL + url);
+        params.add("_csrf", token);
+        RequestHeadersSpec<?> headersSpec = bodySpec.body(
+                BodyInserters.fromFormData(params)
+        );
+    
+        var cookies = headersSpec.exchangeToMono(response -> {
+            if(response.statusCode().isError())
+                return Mono.just(response.headers().header("Set-Cookie").get(0));
+            return response.bodyToMono(String.class);
+        }).block();
+        
+        token = cookies.substring(cookies.indexOf("=") + 1, cookies.indexOf(";"));
+    }
+    
 }
