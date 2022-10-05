@@ -10,6 +10,7 @@ import server.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -36,13 +37,14 @@ public class UserController {
         
         userService.login(user);
         
+        response.setTrailerFields(() -> Map.of("username", user.getUsername()));
         response.sendRedirect("/info");
     }
     
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response logout(@AuthenticationPrincipal User user) {
+    public Response logout(@RequestParam String username) {
         
-        return userService.logout(user);
+        return userService.logout(username);
     }
     
 }

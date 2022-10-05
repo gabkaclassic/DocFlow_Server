@@ -2,15 +2,13 @@ package server.controller.response;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import server.entity.process.Participant;
 import server.entity.process.Process;
 
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
 @Builder
+@Data
 public class GeneralInfoResponse extends Response{
     
     public static final String SERVER_ERROR = "Error on server side";

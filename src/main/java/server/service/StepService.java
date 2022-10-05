@@ -34,19 +34,18 @@ public class StepService {
     
         var step = findById(stepId);
         var participant = participantService.findById(participantId);
-    
-        if(step.isPresent() && participant.isPresent())
-            return StepResponse.builder()
-                    .participant(participant.get())
-                    .step(step.get())
-                    .build()
-                    .message(StepResponse.SUCCESS_LOAD)
-                    .status(Response.STATUS_SUCCESS);
+        var response = new StepResponse();
+        if(step.isPresent() && participant.isPresent()) {
+            response.setParticipant(participant.get());
+            response.setStep(step.get());
+            response.setMessage(StepResponse.SUCCESS_LOAD);
+            response.setStatus(Response.STATUS_SUCCESS);
+        }
+        else {
+            response.setStatus(Response.STATUS_ERROR);
+            response.setMessage(StepResponse.STEP_DOES_NOT_EXISTS);
+        }
         
-        else
-            return StepResponse.builder()
-                    .build()
-                    .status(Response.STATUS_ERROR)
-                    .message(StepResponse.STEP_DOES_NOT_EXISTS);
+        return response;
     }
 }

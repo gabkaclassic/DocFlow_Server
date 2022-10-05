@@ -12,6 +12,7 @@ import server.entity.user.User;
 import server.repository.ParticipantRepository;
 import server.repository.UserRepository;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -38,31 +39,25 @@ public class UserService implements UserDetailsService {
         this.encoder = encoder;
     }
     
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         
         return userRepository.findByUsername(username);
     }
     
     public Response registration(String login, String password) {
      
+        var response = new Response();
+        response.setStatus(Response.STATUS_ERROR);
         
         if(userRepository.findByUsername(login) != null)
-            return Response.builder()
-                    .status(Response.STATUS_ERROR)
-                    .message(Response.USER_ALREADY_EXISTS)
-                    .build();
+            response.setMessage(Response.USER_ALREADY_EXISTS);
+        else if(!checkLogin(login))
+            response.setMessage(Response.INVALID_LOGIN);
+        else if(!checkPassword(password))
+            response.setMessage(Response.WEAK_PASSWORD);
         
-        if(!checkLogin(login))
-            return Response.builder()
-                    .status(Response.STATUS_ERROR)
-                    .message(Response.INVALID_LOGIN)
-                    .build();
-        
-        if(!checkPassword(password))
-            return Response.builder()
-                    .status(Response.STATUS_ERROR)
-                    .message(Response.WEAK_PASSWORD)
-                    .build();
+        if(response.error() && response.getMessage() != null)
+            return response;
         
         var newUser = new User();
         newUser.setUsername(login);
@@ -72,21 +67,25 @@ public class UserService implements UserDetailsService {
         newParticipant.setOwner(newUser);
         userRepository.save(newUser);
         participantRepository.save(newParticipant);
+        response.setStatus(Response.STATUS_SUCCESS);
+        response.setMessage(Response.SUCCESS_REGISTRATION);
         
-        return Response.builder()
-                .status(Response.STATUS_SUCCESS)
-                .message(Response.SUCCESS_REGISTRATION)
-                .build();
+        return response;
     }
     
-    public Response logout(User user) {
+    public Optional<User> findById(Long id) {
         
-        userRepository.logout(user.getId());
+        return userRepository.findById(id);
+    }
+    
+    public Response logout(String username) {
         
-        return Response.builder()
-                .status(Response.STATUS_SUCCESS)
-                .message(Response.SUCCESS_LOGOUT)
-                .build();
+        userRepository.logout(username);
+        var response = new Response();
+        response.setStatus(Response.STATUS_SUCCESS);
+        response.setMessage(Response.SUCCESS_LOGOUT);
+        
+        return response;
     }
     
     public void login(User user) {

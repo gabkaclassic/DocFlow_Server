@@ -15,8 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long>, CrudRepositor
     
     @Modifying
     @Transactional
-    @Query("update User u set u.online = 'f' where u.id = :id")
-    void logout(Long id);
+    @Query("update User u set u.online = 'f' where u.username = :username")
+    void logout(String username);
     
     @Modifying
     @Transactional

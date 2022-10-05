@@ -24,7 +24,7 @@ public class StepController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public StepResponse getStepInfo(@RequestParam Long participantId,
                                     @RequestParam Long stepId) {
-        
+
         return stepService.getStep(participantId, stepId);
     }
 }

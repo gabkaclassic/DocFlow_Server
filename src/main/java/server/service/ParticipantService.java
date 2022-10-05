@@ -20,10 +20,13 @@ public class ParticipantService {
     
     private final ParticipantRepository repository;
     
+    private final UserService userService;
+    
     @Autowired
-    public ParticipantService(ParticipantRepository repository) {
+    public ParticipantService(ParticipantRepository repository, UserService userService) {
         
         this.repository = repository;
+        this.userService = userService;
     }
     
     public Participant findByOwner(User user) {
@@ -38,7 +41,9 @@ public class ParticipantService {
                 .collect(Collectors.toCollection(HashSet::new));
     }
     
-    public GeneralInfoResponse getProcessesAndTeams(User user) {
+    public GeneralInfoResponse getProcessesAndTeams(String username) {
+
+        var user = userService.loadUserByUsername(username);
         
         if(user == null)
             return GeneralInfoResponse.builder().build()
