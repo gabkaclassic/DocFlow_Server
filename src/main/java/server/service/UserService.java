@@ -12,16 +12,11 @@ import server.entity.user.User;
 import server.repository.ParticipantRepository;
 import server.repository.UserRepository;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
 public class UserService implements UserDetailsService {
-    
-    private static final String USER_ALREADY_EXISTS = "Account with this login already exists";
-    private static final String SUCCESS_REGISTRATION = "Registration was finished with success status";
-    private static final String SUCCESS_LOGOUT = "Logout process finished with success status";
-    private static final String WEAK_PASSWORD = "Password must contain 8 characters, at least 1 special symbol and at least 1 integer";
-    private static final String INVALID_LOGIN = "Login must contain from 2 to 64 symbols";
     
     private static final int MIN_LOGIN_LENGTH = 2;
     private static final int MAX_LOGIN_LENGTH = 64;
@@ -30,37 +25,39 @@ public class UserService implements UserDetailsService {
     private static final Pattern PASSWORD_PATTERN_SECOND = Pattern.compile("[0-9]+");
     private static final Pattern PASSWORD_PATTERN_THIRD = Pattern.compile("[^а-яА-Я0-9a-zA-Z]+");
     
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    
+    private final ParticipantRepository participantRepository;
+    
+    private final BCryptPasswordEncoder encoder;
     
     @Autowired
-    private ParticipantRepository participantRepository;
+    public UserService(UserRepository userRepository, ParticipantRepository participantRepository, BCryptPasswordEncoder encoder) {
+        
+        this.userRepository = userRepository;
+        this.participantRepository = participantRepository;
+        this.encoder = encoder;
+    }
     
-    @Autowired
-    private BCryptPasswordEncoder encoder;
-    
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         
         return userRepository.findByUsername(username);
     }
     
-    public void registration(String login, String password, Response response) {
+    public Response registration(String login, String password) {
      
-        if(userRepository.findByUsername(login) != null) {
-            response.setStatus(Response.STATUS_ERROR);
-            response.setMessage(USER_ALREADY_EXISTS);
-            return;
-        }
-        if(!checkLogin(login)) {
-            response.setStatus(Response.STATUS_ERROR);
-            response.setMessage(INVALID_LOGIN);
-            return;
-        }
-        if(!checkPassword(password)) {
-            response.setStatus(Response.STATUS_ERROR);
-            response.setMessage(WEAK_PASSWORD);
-            return;
-        }
+        var response = new Response();
+        response.setStatus(Response.STATUS_ERROR);
+        
+        if(userRepository.findByUsername(login) != null)
+            response.setMessage(Response.USER_ALREADY_EXISTS);
+        else if(!checkLogin(login))
+            response.setMessage(Response.INVALID_LOGIN);
+        else if(!checkPassword(password))
+            response.setMessage(Response.WEAK_PASSWORD);
+        
+        if(response.error() && response.getMessage() != null)
+            return response;
         
         var newUser = new User();
         newUser.setUsername(login);
@@ -70,17 +67,25 @@ public class UserService implements UserDetailsService {
         newParticipant.setOwner(newUser);
         userRepository.save(newUser);
         participantRepository.save(newParticipant);
-        
         response.setStatus(Response.STATUS_SUCCESS);
-        response.setMessage(SUCCESS_REGISTRATION);
-    
+        response.setMessage(Response.SUCCESS_REGISTRATION);
+        
+        return response;
     }
     
-    public void logout(User user, Response response) {
+    public Optional<User> findById(Long id) {
         
-        userRepository.logout(user.getId());
+        return userRepository.findById(id);
+    }
+    
+    public Response logout(String username) {
+        
+        userRepository.logout(username);
+        var response = new Response();
         response.setStatus(Response.STATUS_SUCCESS);
-        response.setMessage(SUCCESS_LOGOUT);
+        response.setMessage(Response.SUCCESS_LOGOUT);
+        
+        return response;
     }
     
     public void login(User user) {
@@ -101,3 +106,4 @@ public class UserService implements UserDetailsService {
                 && PASSWORD_PATTERN_THIRD.matcher(password).find();
     }
 }
+

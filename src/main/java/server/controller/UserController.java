@@ -10,22 +10,26 @@ import server.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+    
+    private final UserService userService;
+    
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        
+        this.userService = userService;
+    }
     
     @PostMapping(value = "/registry", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response registration(@RequestParam String username,
                                  @RequestParam String password) {
         
-        var response = new Response();
-        userService.registration(username, password, response);
-        
-        return response;
+        return userService.registration(username, password);
     }
     
     @GetMapping("/login/success")
@@ -33,16 +37,14 @@ public class UserController {
         
         userService.login(user);
         
+        response.setTrailerFields(() -> Map.of("username", user.getUsername()));
         response.sendRedirect("/info");
     }
     
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response logout(@AuthenticationPrincipal User user) {
+    public Response logout(@RequestParam String username) {
         
-        var response = new Response();
-        userService.logout(user, response);
-        
-        return response;
+        return userService.logout(username);
     }
     
 }

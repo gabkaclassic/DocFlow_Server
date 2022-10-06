@@ -21,7 +21,7 @@ public class Step {
     @Column
     private String title;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "process_documents"
     )
@@ -39,3 +39,4 @@ public class Step {
     private Step nextStep;
     
 }
+

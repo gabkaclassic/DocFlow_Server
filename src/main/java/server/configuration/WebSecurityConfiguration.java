@@ -11,35 +11,35 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.session.MapSessionRepository;
-import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
-import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
-
-import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration {
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
+    
+    private final UserDetailsService userDetailsService;
     
     @Autowired
-    private UserDetailsService userDetailsService;
+    public WebSecurityConfiguration(BCryptPasswordEncoder encoder, UserDetailsService userDetailsService) {
+        
+        this.encoder = encoder;
+        this.userDetailsService = userDetailsService;
+    }
     
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
-    
-        security.csrf().disable()
+    public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
+        
+        security.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeHttpRequests()
                 .antMatchers("/**").permitAll().anyRequest().authenticated()
-                .and()
-                .formLogin().loginPage("/user/login").permitAll().defaultSuccessUrl("/user/login/success").failureUrl("/user/login/failure")
+                .and().formLogin().loginPage("/user/login").permitAll().defaultSuccessUrl("/user/login/success").failureUrl("/user/login/failure")
                 .and().rememberMe()
-                .and().logout().logoutUrl("/user/logout").permitAll().deleteCookies("JSESSIONID")
+                .and().logout().logoutUrl("/user/logout").deleteCookies("JSESSIONID")
                 .and().cors()
                 .and().exceptionHandling();
         
@@ -74,5 +74,5 @@ public class WebSecurityConfiguration {
         
         return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
     }
-
 }
+

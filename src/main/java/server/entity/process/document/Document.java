@@ -23,11 +23,13 @@ public class Document {
     private Set<Comment> comments;
     
     @Column
-    private String path;
+    @Lob
+    private byte[] file;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Resource> resources;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private DocumentType type;
 }
+
