@@ -3,7 +3,6 @@ package server.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.Response;
-import server.entity.process.Participant;
 import server.repository.TeamRepository;
 
 @Service

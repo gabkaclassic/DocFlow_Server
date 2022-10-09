@@ -7,9 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/create")
 public class CreateController {
 
-//    @PostMapping
-//    public Response createTeam(@RequestParam String title,
-//                               @RequestParam List<String> participantNameList) {
-//
-//    }
+
 }

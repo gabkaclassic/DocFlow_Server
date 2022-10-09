@@ -1,8 +1,8 @@
 package server.entity;
 
+import lombok.Data;
 import server.entity.process.Participant;
 import server.entity.process.Process;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Set;

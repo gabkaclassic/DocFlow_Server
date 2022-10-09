@@ -59,7 +59,6 @@ public class WebSecurityConfiguration {
                }
         
                 )
-//                .defaultSuccessUrl("/user/login/success").failureUrl("/user/login/failure")
                 .and().rememberMe()
                 .and().cors()
                 .and().exceptionHandling()

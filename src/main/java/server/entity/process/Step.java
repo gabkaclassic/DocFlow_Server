@@ -1,8 +1,8 @@
 package server.entity.process;
 
-import server.entity.process.document.Document;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import server.entity.process.document.Document;
 
 import javax.persistence.*;
 import java.util.Map;

@@ -1,10 +1,10 @@
 package server.entity.process;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import server.entity.Team;
-import lombok.NoArgsConstructor;
 import server.entity.user.User;
 
 import javax.persistence.*;
