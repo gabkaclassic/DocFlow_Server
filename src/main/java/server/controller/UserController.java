@@ -1,21 +1,17 @@
 package server.controller;
 
-import server.controller.response.Response;
-import server.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import server.controller.response.Response;
 import server.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
     
     private final UserService userService;
     
@@ -31,18 +27,12 @@ public class UserController {
         
         return userService.registration(username, password);
     }
-    
-    @GetMapping("/login/success")
-    public void postLogin(@AuthenticationPrincipal User user, HttpServletResponse response) throws IOException {
-        
-        userService.login(user);
-        
-        response.setTrailerFields(() -> Map.of("username", user.getUsername()));
-        response.sendRedirect("/info");
-    }
-    
+
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response logout(@RequestParam String username) {
+    public Response logout(@RequestParam String username, HttpServletResponse response) throws IOException {
+        
+        if(username == null)
+            response.sendRedirect("/user/login");
         
         return userService.logout(username);
     }

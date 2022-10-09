@@ -7,13 +7,11 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
-import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
 import org.springframework.web.reactive.function.client.WebClient.UriSpec;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.net.URISyntaxException;
 
 public class Sender {
     
@@ -28,7 +26,6 @@ public class Sender {
     
     public void registration(String username, String password) throws IOException {
         
-//        refreshToken();
         var params = new LinkedMultiValueMap();
         params.add("username", username);
         params.add("password", password);
@@ -36,42 +33,34 @@ public class Sender {
         
     }
     
-//    public void logout() throws IOException {
-//
-//        List<NameValuePair> params = new ArrayList<>();
-//        params.add(new BasicNameValuePair("_csrf", token));
-//        var response = send(BASE_URL + "/user/logout", params);
-//
-//    }
     
     private void refreshToken() throws IOException {
         
-        send(BASE_URL, new LinkedMultiValueMap());
+//        send(BASE_URL, new LinkedMultiValueMap());
     }
     
     private void send(String url,  LinkedMultiValueMap params) throws IOException {
     
         var client = WebClient.builder()
                 .baseUrl(BASE_URL)
-                .defaultCookie("cookieKey", "cookieValue")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", BASE_URL + url))
                 .build();
-    
         UriSpec<RequestBodySpec> uriSpec = client.post();
         RequestBodySpec bodySpec = uriSpec.uri(BASE_URL + url);
-        params.add("_csrf", token);
         RequestHeadersSpec<?> headersSpec = bodySpec.body(
                 BodyInserters.fromFormData(params)
         );
-    
-        var cookies = headersSpec.exchangeToMono(response -> {
-            if(response.statusCode().isError())
-                return Mono.just(response.headers().header("Set-Cookie").get(0));
-            return response.bodyToMono(String.class);
-        }).block();
         
-        token = cookies.substring(cookies.indexOf("=") + 1, cookies.indexOf(";"));
+        var response = headersSpec.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode().toString()));
+        System.out.println(response.block());
+        
     }
     
+    public void login(String username, String password) throws IOException, URISyntaxException {
+    
+        var params = new LinkedMultiValueMap();
+        params.add("username", username);
+        params.add("password", password);
+        send("user/login", params);
+    }
 }

@@ -22,7 +22,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @PropertySources({
         @PropertySource("classpath:application.properties")
 })
-
 @EnableJpaRepositories("server/repository")
 @EntityScan(basePackages = {"server/entity"})
 public class Application {

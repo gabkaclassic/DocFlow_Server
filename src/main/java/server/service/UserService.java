@@ -1,7 +1,7 @@
 package server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -88,9 +88,9 @@ public class UserService implements UserDetailsService {
         return response;
     }
     
-    public void login(User user) {
+    public void login(String username) {
         
-        userRepository.login(user.getId());
+        userRepository.login(username);
     }
 
     private boolean checkLogin(String login) {
