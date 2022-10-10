@@ -35,9 +35,9 @@ public class UserController {
     @GetMapping("/login/success")
     public void postLogin(@AuthenticationPrincipal User user, HttpServletResponse response) throws IOException {
         
-        userService.login(user);
-        
-        response.setTrailerFields(() -> Map.of("username", user.getUsername()));
+//        userService.login(username);
+//
+//        response.setTrailerFields(() -> Map.of("username", username));
         response.sendRedirect("/info");
     }
     

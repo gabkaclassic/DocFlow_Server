@@ -34,10 +34,11 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         
-        security.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+        security.csrf().disable()
+//                csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeHttpRequests()
                 .antMatchers("/**").permitAll().anyRequest().authenticated()
-                .and().formLogin().loginPage("/user/login").permitAll().defaultSuccessUrl("/user/login/success").failureUrl("/user/login/failure")
+                .and().formLogin().loginPage("/user/login").defaultSuccessUrl("/user/login/success", true).failureUrl("/user/login/failure")
                 .and().rememberMe()
                 .and().logout().logoutUrl("/user/logout").deleteCookies("JSESSIONID")
                 .and().cors()

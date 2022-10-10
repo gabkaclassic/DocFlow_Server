@@ -9,7 +9,10 @@ public class Application {
     public static void main(String[] args) throws IOException {
     
         var sender = new Sender();
-        sender.registration("user123", "lalala123!");
+        sender.login("user123", "lalala123!");
+        //sender.login("user123", "lalala123!");
+        //sender.logout("user123");
+
         
         }
 }

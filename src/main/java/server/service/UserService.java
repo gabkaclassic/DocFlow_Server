@@ -88,9 +88,9 @@ public class UserService implements UserDetailsService {
         return response;
     }
     
-    public void login(User user) {
-        
-        userRepository.login(user.getId());
+    public void login(String username) {
+
+        userRepository.login(username);
     }
 
     private boolean checkLogin(String login) {

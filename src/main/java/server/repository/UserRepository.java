@@ -21,6 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long>, CrudRepositor
     
     @Modifying
     @Transactional
-    @Query("update User u set u.online = 't' where u.id = :id")
-    void login(Long id);
+    @Query("update User u set u.online = 't' where u.username = :username")
+    void login(String username);
 }
