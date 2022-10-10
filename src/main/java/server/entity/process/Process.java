@@ -16,9 +16,14 @@ public class Process {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Step> steps;
     
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Step currentStep;
+    
+    public Step nextStep() {
+        
+        return currentStep = currentStep.getNextStep();
+    }
 }

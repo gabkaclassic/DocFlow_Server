@@ -5,7 +5,7 @@ import server.entity.process.Participant;
 import server.entity.process.Process;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "teams")
@@ -19,9 +19,17 @@ public class Team {
     @Column
     private String title;
     
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Participant> participants;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Participant> participants;
     
     @OneToMany(fetch = FetchType.LAZY)
-    private Set<Process> processes;
+    private List<Process> processes;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Participant teamLeader;
+    
+    public void addParticipant(Participant participant) {
+        
+        participants.add(participant);
+    }
 }

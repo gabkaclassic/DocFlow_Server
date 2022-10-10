@@ -35,7 +35,7 @@ public class Step {
     @MapKeyColumn(name = "step_id")
     private Map<Participant, Rules> rules;
     
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Step nextStep;
     
 }

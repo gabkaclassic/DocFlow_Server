@@ -9,6 +9,7 @@ import server.entity.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,6 @@ public class Participant implements Serializable {
     @ToString.Exclude
     private User owner;
     
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Team> teams;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Team> teams;
 }

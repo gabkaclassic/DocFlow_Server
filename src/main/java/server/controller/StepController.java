@@ -2,11 +2,10 @@ package server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.controller.response.StepResponse;
+import server.entity.process.Process;
+import server.entity.process.Step;
 import server.service.StepService;
 
 @RestController
@@ -22,9 +21,20 @@ public class StepController {
     }
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public StepResponse getStepInfo(@RequestParam Long participantId,
-                                    @RequestParam Long stepId) {
+    public StepResponse getStepInfo(@RequestParam Long stepId) {
 
-        return stepService.getStep(participantId, stepId);
+        return stepService.getStep(stepId);
+    }
+    
+    @PostMapping(value = "/approve", produces = MediaType.APPLICATION_JSON_VALUE)
+    public StepResponse approve(@RequestParam Process process) {
+        
+        return stepService.approve(process);
+    }
+    
+    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public StepResponse updateStep(@RequestParam Step step) {
+        
+        return stepService.update(step);
     }
 }

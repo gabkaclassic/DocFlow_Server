@@ -9,23 +9,24 @@ import server.service.ParticipantService;
 import server.service.StepService;
 
 @Data
-@NoArgsConstructor
-public class StepResponse {
+@Builder
+public class StepResponse extends Response {
     
-    public static final String SUCCESS_LOAD = "Success loading of data";
     public static final String STEP_DOES_NOT_EXISTS = "The step doesn't exists";
-    
-    @Autowired
-    private StepService stepService;
-    
-    @Autowired
-    private ParticipantService participantService;
-    
-    private String status;
-    
-    private String message;
     
     private Step step;
     
-    private Participant participant;
+    public StepResponse message(String message) {
+        
+        setMessage(message);
+        
+        return this;
+    }
+    
+    public StepResponse status(String status) {
+        
+        setStatus(status);
+        
+        return this;
+    }
 }
