@@ -9,6 +9,7 @@ import server.entity.process.Process;
 import server.entity.user.User;
 import server.repository.ParticipantRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,5 +110,10 @@ public class ParticipantService {
     public void save(Participant participant) {
         
         repository.save(participant);
+    }
+    
+    public void saveAll(Collection<Participant> participants) {
+        
+        repository.saveAll(participants);
     }
 }

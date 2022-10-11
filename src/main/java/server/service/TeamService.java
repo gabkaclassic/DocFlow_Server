@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.Response;
 import server.entity.Team;
+import server.entity.process.Participant;
 import server.repository.TeamRepository;
+
+import java.util.Objects;
 
 @Service
 public class TeamService {
@@ -22,6 +25,18 @@ public class TeamService {
     
     public Response createTeam(Team team) {
         
+        var teamLeader = participantService.findById(team.getTeamLeader().getId()).get();
+        var participants = team.getParticipants().stream()
+                .map(Participant::getId)
+                .map(participantService::findById)
+                .map(o -> o.orElseGet(null))
+                .filter(Objects::nonNull)
+                .peek(p -> p.addTeam(team))
+                .toList();
+        
+        team.setParticipants(participants);
+        team.setTeamLeader(teamLeader);
+    
         repository.save(team);
         
         var response = new Response();

@@ -8,6 +8,7 @@ import server.entity.process.Process;
 import server.entity.process.Step;
 import server.repository.StepRepository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -66,5 +67,15 @@ public class StepService {
         return StepResponse.builder().build()
                 .status(Response.STATUS_SUCCESS)
                 .message(Response.SUCCESS_LOADING);
+    }
+    
+    public void save(Step currentStep) {
+        
+        repository.save(currentStep);
+    }
+    
+    public void saveAll(Collection<Step> steps) {
+        
+        repository.saveAll(steps);
     }
 }

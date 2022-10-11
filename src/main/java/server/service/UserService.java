@@ -66,6 +66,7 @@ public class UserService implements UserDetailsService {
         newParticipant.setOwner(newUser);
         userRepository.save(newUser);
         participantRepository.save(newParticipant);
+        
         response.setStatus(Response.STATUS_SUCCESS);
         response.setMessage(Response.SUCCESS_REGISTRATION);
         

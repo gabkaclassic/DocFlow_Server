@@ -1,7 +1,9 @@
 package server.entity.process;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import server.entity.deserializer.ProcessDeserializer;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,20 +12,23 @@ import java.util.List;
 @Table(name = "processes")
 @NoArgsConstructor
 @Data
+@JsonDeserialize(using = ProcessDeserializer.class)
 public class Process {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Step> steps;
     
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Step currentStep;
     
     public Step nextStep() {
         
-        return currentStep = currentStep.getNextStep();
+        return currentStep = steps.stream()
+                .filter(step -> step.getNumber() == currentStep.getNumber() + 1)
+                .findFirst().orElseGet(null);
     }
 }
