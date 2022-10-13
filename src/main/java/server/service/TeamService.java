@@ -64,6 +64,7 @@ public class TeamService {
         var team = teamOptional.get();
         
         team.addParticipant(participant);
+        participant.addTeam(team);
         repository.save(team);
         participantService.save(participant);
         
