@@ -1,17 +1,19 @@
 package server.entity.process;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import server.entity.deserializer.StepDeserializer;
 import server.entity.process.document.Document;
 
 import javax.persistence.*;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "steps")
 @NoArgsConstructor
 @Data
+@JsonDeserialize(using = StepDeserializer.class)
 public class Step {
     
     @Id
@@ -19,13 +21,16 @@ public class Step {
     private long id;
     
     @Column
+    private int number;
+    
+    @Column
     private String title;
     
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "process_documents"
     )
-    private Set<Document> documents;
+    private Set<Document> documents = new HashSet<>();
     
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(
@@ -33,9 +38,10 @@ public class Step {
             joinColumns = @JoinColumn(name = "participant_id")
     )
     @MapKeyColumn(name = "step_id")
-    private Map<Participant, Rules> rules;
+    private Map<Long, Rules> rules = new HashMap<>();
     
-    @OneToOne
-    private Step nextStep;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Set<Participant> participants = new HashSet<>();
     
 }
+

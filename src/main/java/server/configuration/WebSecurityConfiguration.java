@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -49,15 +50,11 @@ public class WebSecurityConfiguration {
         security
                 .authorizeRequests()
                 .antMatchers( "/user/login", "/user/logout", "/user/registry").permitAll().anyRequest().authenticated()
-                .and().formLogin().loginPage("/user/login").successHandler(new AuthenticationSuccessHandler() {
-
-                   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                       var username = authentication.getName();
-    
-                       userService.login(username);
-                   }
-               }
-        
+                .and().formLogin().loginPage("/user/login").successHandler((request, response, authentication) -> {
+                    var username = authentication.getName();
+ 
+                    userService.login(username);
+                }
                 )
                 .and().rememberMe()
                 .and().cors()

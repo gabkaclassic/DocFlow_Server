@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
         else if(!checkPassword(password))
             response.setMessage(Response.WEAK_PASSWORD);
         
-        if(response.error() && response.getMessage() != null)
+        if(response.isError() && response.getMessage() != null)
             return response;
         
         var newUser = new User();
@@ -66,6 +66,7 @@ public class UserService implements UserDetailsService {
         newParticipant.setOwner(newUser);
         userRepository.save(newUser);
         participantRepository.save(newParticipant);
+        
         response.setStatus(Response.STATUS_SUCCESS);
         response.setMessage(Response.SUCCESS_REGISTRATION);
         
@@ -103,5 +104,10 @@ public class UserService implements UserDetailsService {
                 && PASSWORD_PATTERN_FIRST.matcher(password).find()
                 && PASSWORD_PATTERN_SECOND.matcher(password).find()
                 && PASSWORD_PATTERN_THIRD.matcher(password).find();
+    }
+    
+    public User findByUsername(String username) {
+        
+        return userRepository.findByUsername(username);
     }
 }
