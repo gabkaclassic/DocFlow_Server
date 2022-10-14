@@ -19,7 +19,7 @@ public class Log_in {
     private URL location;
 
     @FXML
-    private Button Sign_in_button;
+    public Button Sign_in_button;
 
     @FXML
     private Button Sign_up_button;

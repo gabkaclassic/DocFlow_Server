@@ -1,3 +1,5 @@
+
+
 module application {
     requires javafx.controls;
     requires javafx.fxml;
@@ -22,6 +24,6 @@ module application {
     requires spring.boot.autoconfigure;
 
 
-    opens views to javafx.fxml;
+    opens gui.application to javafx.fxml;
     exports gui.application;
 }
