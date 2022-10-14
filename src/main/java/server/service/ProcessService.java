@@ -43,5 +43,8 @@ public class ProcessService {
             return response;
     }
     
-
+    public Process findById(Long processId) {
+        
+        return repository.findById(processId).orElseThrow();
+    }
 }

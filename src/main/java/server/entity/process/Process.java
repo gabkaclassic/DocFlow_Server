@@ -7,6 +7,8 @@ import server.entity.deserializer.ProcessDeserializer;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Entity
 @Table(name = "processes")
@@ -25,10 +27,12 @@ public class Process {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Step currentStep;
     
-    public Step nextStep() {
+    public boolean nextStep() {
         
-        return currentStep = steps.stream()
-                .filter(step -> step.getNumber() == currentStep.getNumber() + 1)
-                .findFirst().orElseGet(null);
+        return Objects.nonNull(currentStep = steps.stream()
+                    .filter(step -> step.getNumber() == currentStep.getNumber() + 1)
+                    .findFirst().orElse(null)
+        );
+        
     }
 }

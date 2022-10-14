@@ -9,6 +9,7 @@ import server.entity.process.Step;
 import server.repository.StepRepository;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,36 +29,60 @@ public class StepService {
         this.processService = processService;
     }
     
-    public Optional<Step> findById(Long id) {
+    public Step findById(Long id) {
         
         
-        return repository.findById(id);
+        return repository.findById(id).orElseThrow();
     }
     
     public StepResponse getStep(Long stepId) {
         
-        var step = findById(stepId);
+        Step step;
+        StepResponse response;
         
-        if(step.isPresent())
-            return StepResponse.builder()
-                    .step(step.get()).build()
+        try {
+            
+            step = findById(stepId);
+    
+            response = StepResponse.builder()
+                    .step(step).build()
                     .status(Response.STATUS_SUCCESS)
                     .message(Response.SUCCESS_LOADING);
+        }
+        catch (NoSuchElementException e) {
     
-        return StepResponse.builder().build()
-                .status(Response.STATUS_ERROR)
-                .message(StepResponse.STEP_DOES_NOT_EXISTS);
+            response = StepResponse.builder().build()
+                    .status(Response.STATUS_ERROR)
+                    .message(e.getMessage());
+        }
+    
+        return response;
     }
     
-    public StepResponse approve(Process process) {
+    public StepResponse approve(Long processId) {
         
-        process.nextStep();
-        processService.save(process);
+        Process process;
+        StepResponse response;
         
-        return StepResponse.builder()
-                .step(process.getCurrentStep()).build()
-                .status(Response.STATUS_SUCCESS)
-                .message(Response.SUCCESS_LOADING);
+        try {
+            
+            process = processService.findById(processId);
+            process.nextStep();
+            processService.save(process);
+    
+            response = StepResponse.builder()
+                    .step(process.getCurrentStep()).build()
+                    .status(Response.STATUS_SUCCESS)
+                    .message(Response.SUCCESS_LOADING);
+        }
+        catch (NoSuchElementException e) {
+            
+            response = StepResponse.builder().build()
+                    .status(Response.STATUS_ERROR)
+                    .message(e.getMessage());
+        }
+        
+        return response;
     }
     
     public StepResponse update(Step step) {

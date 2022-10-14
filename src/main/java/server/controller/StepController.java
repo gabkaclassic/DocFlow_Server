@@ -10,6 +10,7 @@ import server.entity.process.Process;
 import server.entity.process.Step;
 import server.service.StepService;
 
+
 @RestController
 @RequestMapping("/step")
 public class StepController {
@@ -32,14 +33,14 @@ public class StepController {
     }
     
     @PostMapping(value = "/approve", produces = MediaType.APPLICATION_JSON_VALUE)
-    public StepResponse approve(@RequestParam String process) throws JsonProcessingException {
+    public StepResponse approve(@RequestParam Long processId) {
         
-        return stepService.approve(mapper.readValue(process, Process.class));
+        return stepService.approve(processId);
     }
     
-    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     public StepResponse updateStep(@RequestParam String step) throws JsonProcessingException {
         
         return stepService.update(mapper.readValue(step, Step.class));
     }
-}
+    }

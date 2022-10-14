@@ -12,7 +12,7 @@ import server.service.StepService;
 @Builder
 public class StepResponse extends Response {
     
-    public static final String STEP_DOES_NOT_EXISTS = "The step doesn't exists";
+    public static final String DOES_NOT_EXISTS = "The entity with such parameters doesn't exists";
     
     private Step step;
     

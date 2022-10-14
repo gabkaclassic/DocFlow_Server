@@ -14,51 +14,46 @@ import server.entity.Team;
 import server.entity.process.Participant;
 import server.entity.process.Process;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 public class Sender {
     
     private static final String BASE_URL = "http://localhost:8080/";
     private static final ObjectMapper mapper = new ObjectMapper();
     
-    private static String cookie = "";
+    private static String session = "";
     
-    private String token;
-    
-    public void registration(String username, String password) throws IOException {
+    public void registration(String username, String password) {
         
-        var params = new LinkedMultiValueMap();
+        var params = new LinkedMultiValueMap<String, String>();
         params.add("username", username);
         params.add("password", password);
         send("user/registry", params);
         
     }
     
-    public void createTeam() throws IOException {
+    public void createTeam() throws JsonProcessingException {
         
         // Как пример работы, реализация будет другой
         
-//        var team = new Team();
-//        var participant = new Participant();
-//        participant.setId(1);
-//        team.setTitle("Some team");
-//        team.setTeamLeader(participant);
-//        team.addParticipant(participant);
-//        var writer = mapper.writer().withDefaultPrettyPrinter();
-//
-//        var params = new LinkedMultiValueMap();
-//        var teamString = writer.writeValueAsString(team);
-//        params.add("team", teamString);
-//        send("/create/team", params);
+        var team = new Team();
+        var participant = new Participant();
+        participant.setId(1);
+        team.setTitle("Some team");
+        team.setTeamLeader(participant);
+        team.addParticipant(participant);
+        var writer = mapper.writer().withDefaultPrettyPrinter();
+
+        var params = new LinkedMultiValueMap();
+        var teamString = writer.writeValueAsString(team);
+        params.add("team", teamString);
+        send("/create/team", params);
         
     }
     
-    private void send(String url,  LinkedMultiValueMap params) throws IOException {
+    private void send(String url,  LinkedMultiValueMap<String, String> params) {
         
         var client = WebClient.builder()
                 .baseUrl(BASE_URL)
-                .defaultCookie("SESSION", cookie)
+                .defaultCookie("SESSION", session)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
         UriSpec<RequestBodySpec> uriSpec = client.post();
@@ -66,13 +61,12 @@ public class Sender {
         RequestHeadersSpec<?> headersSpec = bodySpec.body(
                 BodyInserters.fromFormData(params)
         );
-        
         var response = headersSpec.exchangeToMono(clientResponse -> {
     
-            var session = clientResponse.cookies().getFirst("SESSION");
+            var sessionCookie = clientResponse.cookies().getFirst("SESSION");
             
-            if(session != null)
-                cookie = session.getValue();
+            if(sessionCookie != null)
+                session = sessionCookie.getValue();
             
          return clientResponse.bodyToMono(String.class);
         });
@@ -80,20 +74,23 @@ public class Sender {
         System.out.println(response.block());
     }
     
-    public void login(String username, String password) throws IOException, URISyntaxException {
+    public void login(String username, String password) {
     
-        var params = new LinkedMultiValueMap();
+        var params = new LinkedMultiValueMap<String, String>();
         params.add("username", username);
         params.add("password", password);
         send("user/login", params);
     }
     
-    public void createProcess(Process process) throws IOException {
+    public void createProcess(Process process) {
     
-        var writer = mapper.writer().withDefaultPrettyPrinter();
-        var params = new LinkedMultiValueMap();
-        var teamString = writer.writeValueAsString(process);
-        params.add("team", teamString);
-        send("/create/process", params);
+
+    }
+    
+    public void invite(String username, Long teamId) {
+    
+//        var params = new LinkedMultiValueMap<String, String>();
+//        params.add("username", username);
+//        params.add("teamId", String.valueOf(teamId));
     }
 }
