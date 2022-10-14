@@ -39,7 +39,7 @@ public class Sign_in {
             sign_in.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/hello-view.fxml"));
+            loader.setLocation(getClass().getResource("hello-view.fxml"));
 
             try {
                 loader.load();
@@ -57,7 +57,7 @@ public class Sign_in {
             sign_in_back.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Log_in.fxml"));
+            loader.setLocation(getClass().getResource("Log_in.fxml"));
 
             try {
                 loader.load();

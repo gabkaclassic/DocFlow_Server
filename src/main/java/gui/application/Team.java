@@ -28,7 +28,7 @@ public class Team {
             team_back.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/hello-view.fxml"));
+            loader.setLocation(getClass().getResource("hello-view.fxml"));
 
             try {
                 loader.load();

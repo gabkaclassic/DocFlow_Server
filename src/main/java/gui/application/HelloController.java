@@ -48,7 +48,7 @@ public class HelloController {
             Log_out_button.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Log_in.fxml"));
+            loader.setLocation(getClass().getResource("Log_in.fxml"));
 
             try {
                 loader.load();
@@ -66,7 +66,7 @@ public class HelloController {
             point.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Processes.fxml"));
+            loader.setLocation(getClass().getResource("Processes.fxml"));
 
             try {
                 loader.load();
@@ -84,7 +84,7 @@ public class HelloController {
             team_one.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Team.fxml"));
+            loader.setLocation(getClass().getResource("Team.fxml"));
 
             try {
                 loader.load();
@@ -102,7 +102,7 @@ public class HelloController {
             plus_button.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Add.fxml"));
+            loader.setLocation(getClass().getResource("Add.fxml"));
 
             try {
                 loader.load();

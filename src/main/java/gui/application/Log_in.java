@@ -30,7 +30,7 @@ public class Log_in {
             Sign_in_button.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Sign_in.fxml"));
+            loader.setLocation(getClass().getResource("Sign_in.fxml"));
 
             try {
                 loader.load();
@@ -48,7 +48,7 @@ public class Log_in {
             Sign_up_button.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/Sign_up.fxml"));
+            loader.setLocation(getClass().getResource("Sign_up.fxml"));
 
             try {
                 loader.load();
