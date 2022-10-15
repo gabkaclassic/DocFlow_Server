@@ -7,7 +7,6 @@ import server.entity.deserializer.ProcessDeserializer;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Entity
