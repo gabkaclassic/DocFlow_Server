@@ -7,6 +7,6 @@ import server.entity.process.document.Document;
 
 import java.util.List;
 
-public interface DocumentRepository extends JpaRepository<Document, Long>, CrudRepository<Document, Long> {
+public interface DocumentRepository extends JpaRepository<Document, String>, CrudRepository<Document, String> {
 
 }

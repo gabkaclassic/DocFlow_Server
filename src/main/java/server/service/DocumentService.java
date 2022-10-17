@@ -24,4 +24,9 @@ public class DocumentService {
         repository.saveAll(documents);
     }
     
+    public Document findById(String id) {
+        
+        return repository.findById(id).orElseThrow();
+    }
+    
 }
