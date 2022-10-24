@@ -1,10 +1,12 @@
 package server.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import server.entity.deserializer.UserDeserializer;
 import server.entity.process.Participant;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
+@JsonDeserialize(using = UserDeserializer.class)
 public class User implements UserDetails {
 
     @Id
@@ -31,6 +34,7 @@ public class User implements UserDetails {
     private String username;
     
     @Column
+    @JsonIgnore
     private boolean online;
     
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -46,6 +50,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", nullable = false)
     )
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Set<Roles> roles;
     
     public User() {
@@ -55,7 +60,6 @@ public class User implements UserDetails {
     }
     
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        
         return roles;
     }
     

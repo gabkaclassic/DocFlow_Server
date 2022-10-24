@@ -35,7 +35,7 @@ public class ProcessService {
                     .flatMap(step -> step.getDocuments().stream())
                     .distinct()
                     .forEach(documentService::save);
-    
+            
             var response = new Response();
             response.setStatus(Response.STATUS_SUCCESS);
             response.setMessage(Response.SUCCESS_CREATING);

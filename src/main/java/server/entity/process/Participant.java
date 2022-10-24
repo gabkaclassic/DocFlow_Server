@@ -1,5 +1,8 @@
 package server.entity.process;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,13 +29,7 @@ public class Participant implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private User owner;
-    
-    @ManyToMany
-    @JoinTable(
-            name = "teams_participants",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "participant_id")
-    )
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<Team> teams;
     
     public void addTeam(Team team) {

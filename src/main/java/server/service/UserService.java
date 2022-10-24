@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService {
         var response = new Response();
         response.setStatus(Response.STATUS_ERROR);
         
-        if(userRepository.findByUsername(login) != null)
+        if(userRepository.existsByUsername(login))
             response.setMessage(Response.USER_ALREADY_EXISTS);
         else if(!checkLogin(login))
             response.setMessage(Response.INVALID_LOGIN);

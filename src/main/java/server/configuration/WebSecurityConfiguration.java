@@ -58,7 +58,6 @@ public class WebSecurityConfiguration {
     
         return security.build();
     }
-    
     @Bean
     public AuthenticationManager authenticationManager(BCryptPasswordEncoder encoder,
                                                        UserDetailsService userDetailsService,

@@ -30,12 +30,11 @@ public class TeamDeserializer extends StdDeserializer<Team> {
         
         JsonNode node = jp.getCodec().readTree(jp);
         Team team = new Team();
-        team.setId(node.get("id").asLong());
         team.setTitle(node.get("title").textValue());
         
-        team.setTeamLeader((Participant) JSONUtils.getObject(node, "teamLeader", Participant.class));
-        team.setParticipants(JSONUtils.splitObjects(node, "participants", Participant.class)
-                .map(Participant.class::cast)
+        team.setTeamLeaderId(node.get("teamLeaderId").asLong());
+        team.setParticipants(JSONUtils.splitObjects(node, "participants", String.class)
+                .map(String.class::cast)
                 .toList()
         );
         team.setProcesses(JSONUtils.splitObjects(node, "processes", Process.class)

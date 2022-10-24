@@ -23,7 +23,7 @@ public class InviteController {
     }
     
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response addParticipantIntoTeam(@RequestParam String username, @RequestParam Long teamId) {
+    public Response addParticipantIntoTeam(@RequestParam String username, @RequestParam String teamId) {
         
         return teamService.addParticipant(username, teamId);
     }

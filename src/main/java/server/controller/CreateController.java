@@ -31,8 +31,7 @@ public class CreateController {
     
     @PostMapping(value = "/team", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response createTeam(@RequestParam String team) throws JsonProcessingException {
-        
-        
+    
         return teamService.createTeam(mapper.readValue(team, Team.class));
     }
     

@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long>, CrudRepositor
     @Transactional
     @Query("update User u set u.online = 't' where u.username = :username")
     void login(String username);
+    
+    boolean existsByUsername(String login);
 }
