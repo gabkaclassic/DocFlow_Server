@@ -7,13 +7,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Utilities {
-    
     @Bean
     public ObjectWriter jsonWriter() {
-        
+    
         return new ObjectMapper().writer().withDefaultPrettyPrinter();
     }
-    
     @Bean
     public ObjectMapper jsonMapper() {
         

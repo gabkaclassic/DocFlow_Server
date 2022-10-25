@@ -8,7 +8,5 @@ import server.entity.Team;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team, String>, CrudRepository<Team, String> {
-    
-    @Transactional
-    <S extends Team> S save(S entity);
+
 }

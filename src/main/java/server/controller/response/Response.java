@@ -30,4 +30,22 @@ public class Response {
     public boolean isError() {
         return status.equals(STATUS_ERROR);
     }
+    
+    public static Response successResponse(String message) {
+    
+        var response = new Response();
+        response.setStatus(Response.STATUS_SUCCESS);
+        response.setMessage(message);
+    
+        return response;
+    }
+    
+    public static Response errorResponse(String error) {
+        
+        var response = new Response();
+        response.setStatus(Response.STATUS_ERROR);
+        response.setMessage(error);
+        
+        return response;
+    }
 }
