@@ -5,10 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import server.controller.response.Response;
 import server.service.UserService;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -29,10 +25,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response logout(@RequestParam String username, HttpServletResponse response) throws IOException {
-        
-        if(username == null)
-            response.sendRedirect("/user/login");
+    public Response logout(@RequestParam String username) {
         
         return userService.logout(username);
     }
