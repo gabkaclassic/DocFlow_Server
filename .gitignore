@@ -5,11 +5,11 @@
 *.war
 *.ear
 *.sql
-target
 src/test
 *.pid
 *.port
 *.Ds
+out
 Makefile
 Dockerfile
 *.env
