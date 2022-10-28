@@ -10,7 +10,6 @@ src/test
 *.pid
 *.port
 *.Ds
-*.MF
 Makefile
 Dockerfile
 *.env
