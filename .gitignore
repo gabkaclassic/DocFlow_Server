@@ -13,3 +13,5 @@ out
 Makefile
 Dockerfile
 *.env
+*.log
+logs
