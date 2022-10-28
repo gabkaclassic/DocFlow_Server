@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.controller.response.ExistResponse;
 import server.controller.response.Response;
 import server.entity.Team;
 import server.repository.TeamRepository;
@@ -86,5 +87,12 @@ public class TeamService {
         team.getParticipants().stream()
                 .map(participantService::findByOwnerUsername)
                 .forEach(p -> p.addTeam(team));
+    }
+    
+    public ExistResponse exists(String title) {
+        
+        return ExistResponse.builder()
+                .exist(repository.existsById(title)).build()
+                .status(Response.STATUS_SUCCESS);
     }
 }
