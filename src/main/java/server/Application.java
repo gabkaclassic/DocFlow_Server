@@ -1,7 +1,6 @@
 package server;
 
-//import lombok.extern.log4j.Log4j2;
-//import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -28,17 +27,17 @@ import java.io.IOException;
 })
 @EnableJpaRepositories("server/repository")
 @EntityScan(basePackages = {"server/entity"})
-//@Slf4j
+@Slf4j
 public class Application {
     
     public static void main(String[] args) throws IOException {
     
-//        log.trace("Application starting");
+        log.trace("Application starting");
         
         var application = new SpringApplication(Application.class);
         application.addListeners(new WebServerPortFileWriter(), new ApplicationPidFileWriter());
         application.run();
         
-//        log.trace("Application finishing");
+        log.trace("Application finishing");
     }
 }

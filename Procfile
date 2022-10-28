@@ -1,0 +1,1 @@
+web: java -jar out/artifacts/Docflow_Server_jar/Docflow_Server.jar
