@@ -8,16 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class MockController {
 
-    @GetMapping
+    @GetMapping(value = {
+            "",
+            "/favicon.ico",
+            "/robots.txt"
+    })
     public String homepage() {
         
-        return "redirect:/user/login";
-    }
-    
-    @GetMapping("/favicon.ico")
-    public String favicon() {
-    
-        return "redirect:/user/login";
+        return "";
     }
     
 }
