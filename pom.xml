@@ -30,7 +30,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>15.0.2</java.version>
         <maven.compiler.source>15.0.2</maven.compiler.source>
         <maven.compiler.target>15.0.2</maven.compiler.target>
         <resources>org.apache.maven.plugins:maven-resources-plugin:3.2.0:resources</resources>
