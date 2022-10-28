@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import server.controller.response.Response;
 
 @Log4j2
-//@ControllerAdvice
+@ControllerAdvice
 public class ErrorHandler {
 
-//    @ExceptionHandler(value = {Exception.class})
+    @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public Response handleError(Exception exception) {

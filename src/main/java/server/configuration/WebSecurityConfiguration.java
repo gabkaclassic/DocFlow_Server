@@ -39,7 +39,7 @@ public class WebSecurityConfiguration {
     
         security
                 .authorizeRequests()
-                .antMatchers( "/user/login", "/user/logout", "/user/registry").permitAll().anyRequest().authenticated()
+                .antMatchers( "/user/login", "/user/logout", "/user/registry", "/", "/favicon.ico").permitAll().anyRequest().authenticated()
                 .and().formLogin().loginPage("/user/login").successHandler((request, response, authentication) -> {
                     var username = authentication.getName();
  
