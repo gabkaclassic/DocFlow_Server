@@ -27,11 +27,13 @@
         <defaultGoal>org.apache.maven.plugins:maven-resources-plugin:3.2.0:resources</defaultGoal>
     </build>
 
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>19</java.version>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
+        <resources>org.apache.maven.plugins:maven-resources-plugin:3.2.0:resources</resources>
     </properties>
     <dependencies>
 
