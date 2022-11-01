@@ -107,11 +107,6 @@ public class UserService implements UserDetailsService {
                 && PASSWORD_PATTERN_THIRD.matcher(password).find();
     }
     
-    public User findByUsername(String username) {
-        
-        return userRepository.findByUsername(username);
-    }
-    
     public ExistResponse exists(String username) {
      
         return ExistResponse.builder()

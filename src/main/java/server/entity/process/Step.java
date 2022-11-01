@@ -26,9 +26,9 @@ public class Step {
     @Column
     private String title;
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
-            name = "process_documents"
+            name = "step_documents"
     )
     private Set<Document> documents = new HashSet<>();
     
@@ -38,10 +38,10 @@ public class Step {
             joinColumns = @JoinColumn(name = "participant_id")
     )
     @MapKeyColumn(name = "step_id")
-    private Map<Long, Rules> rules = new HashMap<>();
-    
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private Set<Participant> participants = new HashSet<>();
-    
+    private Map<String, Rules> rules = new HashMap<>();
+    public void addDocuments(Set<Document> documents) {
+        
+        this.documents.addAll(documents);
+    }
 }
 

@@ -102,7 +102,7 @@ public class ParticipantService {
     
     public Participant findByOwnerUsername(String username) {
         
-        var user = userService.findByUsername(username);
+        var user = userService.loadUserByUsername(username);
         
         return user.getClient();
     }

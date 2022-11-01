@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import server.entity.deserializer.DocumentDeserializer;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,22 +17,20 @@ import java.util.List;
 public class Document {
     
     @Id
-    private String id;
-    
     @Column
     private String title;
     
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Comment> comments;
+    @OneToMany(cascade = CascadeType.MERGE)
+    private List<Comment> comments = new ArrayList<>();
     
     @Column
     @Lob
     private byte[] file;
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<Resource> resources;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Resource> resources = new ArrayList<>();
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private DocumentType type;
+    @Column
+    private String format;
 }
 

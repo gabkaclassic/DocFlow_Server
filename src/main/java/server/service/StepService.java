@@ -85,13 +85,36 @@ public class StepService {
         return response;
     }
     
-    public StepResponse update(Step step) {
+    public StepResponse refuse(Long processId) {
+        Process process;
+        StepResponse response;
+    
+        try {
+        
+            process = processService.findById(processId);
+            process.previousStep();
+            processService.save(process);
+        
+            response = StepResponse.builder()
+                    .step(process.getCurrentStep()).build()
+                    .status(Response.STATUS_SUCCESS)
+                    .message(Response.SUCCESS_LOADING);
+        }
+        catch (NoSuchElementException e) {
+        
+            response = StepResponse.builder().build()
+                    .status(Response.STATUS_ERROR)
+                    .message(e.getMessage());
+        }
+    
+        return response;
+    }
+    
+    public Response update(Step step) {
         
         repository.save(step);
         
-        return StepResponse.builder().build()
-                .status(Response.STATUS_SUCCESS)
-                .message(Response.SUCCESS_LOADING);
+        return Response.successResponse(Response.SUCCESS_LOADING);
     }
     
     public void save(Step currentStep) {
