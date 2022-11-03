@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "documents")
-@NoArgsConstructor
 @Data
 @JsonDeserialize(using = DocumentDeserializer.class)
 public class Document {
