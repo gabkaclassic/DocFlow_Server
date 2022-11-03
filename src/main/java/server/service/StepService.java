@@ -10,7 +10,6 @@ import server.repository.StepRepository;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class StepService {
@@ -21,12 +20,15 @@ public class StepService {
     
     private final ProcessService processService;
     
+    private final DocumentService documentService;
+    
     @Autowired
-    public StepService(StepRepository repository, ParticipantService participantService, ProcessService processService) {
+    public StepService(StepRepository repository, ParticipantService participantService, ProcessService processService, DocumentService documentService) {
         
         this.repository = repository;
         this.participantService = participantService;
         this.processService = processService;
+        this.documentService = documentService;
     }
     
     public Step findById(Long id) {
@@ -85,13 +87,36 @@ public class StepService {
         return response;
     }
     
-    public StepResponse update(Step step) {
+    public StepResponse refuse(Long processId) {
+        Process process;
+        StepResponse response;
+    
+        try {
+        
+            process = processService.findById(processId);
+            process.previousStep();
+            processService.save(process);
+        
+            response = StepResponse.builder()
+                    .step(process.getCurrentStep()).build()
+                    .status(Response.STATUS_SUCCESS)
+                    .message(Response.SUCCESS_LOADING);
+        }
+        catch (NoSuchElementException e) {
+        
+            response = StepResponse.builder().build()
+                    .status(Response.STATUS_ERROR)
+                    .message(e.getMessage());
+        }
+    
+        return response;
+    }
+    
+    public Response update(Step step) {
         
         repository.save(step);
         
-        return StepResponse.builder().build()
-                .status(Response.STATUS_SUCCESS)
-                .message(Response.SUCCESS_LOADING);
+        return Response.successResponse(Response.SUCCESS_LOADING);
     }
     
     public void save(Step currentStep) {

@@ -7,5 +7,6 @@ import server.entity.process.Process;
 
 @Repository
 public interface ProcessRepository extends CrudRepository<Process, Long>, JpaRepository<Process, Long> {
-
+    
+    boolean existsByTitle(String title);
 }

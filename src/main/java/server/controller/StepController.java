@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import server.controller.response.Response;
 import server.controller.response.StepResponse;
 import server.entity.process.Process;
 import server.entity.process.Step;
@@ -32,14 +33,20 @@ public class StepController {
         return stepService.getStep(stepId);
     }
     
-    @PostMapping(value = "/approve", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/approve", produces = MediaType.APPLICATION_JSON_VALUE)
     public StepResponse approve(@RequestParam Long processId) {
         
         return stepService.approve(processId);
     }
     
-    @GetMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public StepResponse updateStep(@RequestParam String step) throws JsonProcessingException {
+    @GetMapping(value = "/refuse", produces = MediaType.APPLICATION_JSON_VALUE)
+    public StepResponse response(@RequestParam Long processId) {
+        
+        return stepService.refuse(processId);
+    }
+    
+    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response updateStep(@RequestParam String step) throws JsonProcessingException {
         
         return stepService.update(mapper.readValue(step, Step.class));
     }

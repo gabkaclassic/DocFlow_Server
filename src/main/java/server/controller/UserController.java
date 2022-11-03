@@ -17,6 +17,12 @@ public class UserController {
         this.userService = userService;
     }
     
+    @GetMapping(value = "/login/failure", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response failureLogin() {
+        
+        return Response.errorResponse(Response.INVALID_LOGIN_PROCESS);
+    }
+    
     @PostMapping(value = "/registry", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response registration(@RequestParam String username,
                                  @RequestParam String password) {

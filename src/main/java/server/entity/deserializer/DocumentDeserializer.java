@@ -4,15 +4,12 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import server.entity.process.document.Comment;
 import server.entity.process.document.Document;
-import server.entity.process.document.DocumentType;
-import server.entity.process.document.Resource;
+import server.entity.process.document.DocumentId;
 import server.util.JSONUtils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class DocumentDeserializer extends StdDeserializer<Document> {
@@ -33,17 +30,14 @@ public class DocumentDeserializer extends StdDeserializer<Document> {
         
         JsonNode node = jp.getCodec().readTree(jp);
         var document = new Document();
-        document.setId(node.get("id").textValue());
-        document.setFile((byte[]) JSONUtils.getObject(node, "file", byte[].class));
-        document.setTitle(node.get("title").textValue());
-        document.setType((DocumentType) JSONUtils.getObject(node, "type", DocumentType.class));
-        document.setComments(JSONUtils.splitObjects(node, "comments", Comment.class)
-                .map(Comment.class::cast)
+        document.setId(JSONUtils.getObject(node, "id", DocumentId.class));
+        document.setFile(JSONUtils.getObject(node, "file", byte[].class));
+        document.setFormat(node.get("format").textValue());
+        document.setComments(JSONUtils.splitObjects(node, "comments", String.class)
                 .collect(Collectors.toList())
         );
         
-        document.setResources(JSONUtils.splitObjects(node, "resources", Resource.class)
-                .map(Resource.class::cast)
+        document.setResources(JSONUtils.splitObjects(node, "resources", String.class)
                 .collect(Collectors.toList())
         );
         

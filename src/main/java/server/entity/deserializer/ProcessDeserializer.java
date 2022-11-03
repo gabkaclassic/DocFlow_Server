@@ -34,7 +34,7 @@ public class ProcessDeserializer extends StdDeserializer<Process> {
         var process = new Process();
         
         process.setId(node.get("id").asLong());
-        process.setCurrentStep((Step) JSONUtils.getObject(node, "currentStep", Step.class));
+        process.setCurrentStep(JSONUtils.getObject(node, "currentStep", Step.class));
         
         process.setSteps(JSONUtils.splitObjects(node, "steps", Step.class)
                 .map(Step.class::cast)

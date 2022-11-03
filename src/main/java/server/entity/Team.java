@@ -44,5 +44,10 @@ public class Team {
         
         participants.add(participant);
     }
+    
+    public void removeParticipant(String username) {
+        
+        participants.remove(username);
+    }
 }
 

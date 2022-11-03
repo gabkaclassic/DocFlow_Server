@@ -37,13 +37,9 @@ public class StepDeserializer extends StdDeserializer<Step> {
         step.setId(node.get("id").asLong());
         step.setTitle(node.get("title").textValue());
         step.setNumber(node.get("number").asInt());
-        var map = (Map) JSONUtils.getObject(node, "rules", Map.class);
+        var map = JSONUtils.getObject(node, "rules", Map.class);
         for (var o : map.keySet())
-            step.getRules().put(Long.valueOf(String.valueOf(o)), Rules.valueOf(String.valueOf(map.get(o))));
-        step.setParticipants(JSONUtils.splitObjects(node, "participants", Participant.class)
-                .map(Participant.class::cast)
-                .collect(Collectors.toSet())
-        );
+            step.getRules().put(String.valueOf(o), Rules.valueOf(String.valueOf(map.get(o))));
         
         step.setDocuments(JSONUtils.splitObjects(node, "documents", Document.class)
                 .map(Document.class::cast)

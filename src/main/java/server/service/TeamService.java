@@ -2,9 +2,9 @@ package server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.controller.response.ExistResponse;
 import server.controller.response.Response;
 import server.entity.Team;
 import server.repository.TeamRepository;
@@ -86,5 +86,25 @@ public class TeamService {
         team.getParticipants().stream()
                 .map(participantService::findByOwnerUsername)
                 .forEach(p -> p.addTeam(team));
+    }
+    
+    public ExistResponse exists(String title) {
+        
+        return ExistResponse.builder()
+                .exist(repository.existsById(title)).build()
+                .status(Response.STATUS_SUCCESS);
+    }
+    
+    public Response removeParticipant(String username, String teamId) {
+        
+        var team = repository.findById(teamId).get();
+        var participant = participantService.findByOwnerUsername(username);
+        
+        team.removeParticipant(username);
+        participant.removeTeam(team);
+        repository.save(team);
+        participantService.save(participant);
+        
+        return Response.successResponse(Response.SUCCESS_REFUSE);
     }
 }

@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import server.controller.response.Response;
 
 @Slf4j
 @ControllerAdvice
-public class ErrorHandler {
+public class ErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -18,6 +19,9 @@ public class ErrorHandler {
     public Response handleError(Exception exception) {
         
         log.warn(exception.getLocalizedMessage());
+        
+        exception.printStackTrace();
+
         
         return new Response(Response.STATUS_ERROR, exception.getMessage());
     }

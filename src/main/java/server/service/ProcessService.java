@@ -2,6 +2,7 @@ package server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.controller.response.ExistResponse;
 import server.controller.response.Response;
 import server.entity.process.Process;
 import server.repository.ProcessRepository;
@@ -46,5 +47,12 @@ public class ProcessService {
     public Process findById(Long processId) {
         
         return repository.findById(processId).orElseThrow();
+    }
+    
+    public ExistResponse exists(String title) {
+    
+        return ExistResponse.builder()
+                .exist(repository.existsByTitle(title)).build()
+                .status(Response.STATUS_SUCCESS);
     }
 }
