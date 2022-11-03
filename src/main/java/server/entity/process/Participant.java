@@ -36,4 +36,13 @@ public class Participant implements Serializable {
         
         teams.add(team);
     }
+    
+    public void removeTeam(Team team) {
+     
+        teams.remove(team);
+    }
+    
+    public String getUsername() {
+        return owner.getUsername();
+    }
 }

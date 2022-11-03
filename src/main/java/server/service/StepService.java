@@ -10,7 +10,6 @@ import server.repository.StepRepository;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class StepService {
@@ -21,12 +20,15 @@ public class StepService {
     
     private final ProcessService processService;
     
+    private final DocumentService documentService;
+    
     @Autowired
-    public StepService(StepRepository repository, ParticipantService participantService, ProcessService processService) {
+    public StepService(StepRepository repository, ParticipantService participantService, ProcessService processService, DocumentService documentService) {
         
         this.repository = repository;
         this.participantService = participantService;
         this.processService = processService;
+        this.documentService = documentService;
     }
     
     public Step findById(Long id) {

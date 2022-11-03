@@ -2,8 +2,8 @@ package server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import server.entity.process.document.Document;
+import server.entity.process.document.DocumentId;
 import server.repository.DocumentRepository;
 
 import java.util.Collection;
@@ -11,11 +11,16 @@ import java.util.Collection;
 @Service
 public class DocumentService {
     
+    private final DocumentRepository repository;
+    
     @Autowired
-    private DocumentRepository repository;
+    public DocumentService(DocumentRepository repository) {
+    
+        this.repository = repository;
+    }
     
     public void save(Document document) {
-        
+    
         repository.save(document);
     }
     
@@ -24,9 +29,9 @@ public class DocumentService {
         repository.saveAll(documents);
     }
     
-    public Document findById(String id) {
+    public Document findById(String title, Long processId) {
         
-        return repository.findById(id).orElseThrow();
+        return repository.findById(new DocumentId(processId, title)).orElseThrow();
     }
     
 }

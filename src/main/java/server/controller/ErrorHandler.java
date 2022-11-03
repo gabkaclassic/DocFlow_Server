@@ -22,6 +22,8 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         log.warn(exception.getLocalizedMessage());
         log.trace(exception.getLocalizedMessage());
         
+        exception.printStackTrace();
+        
         return new Response(Response.STATUS_ERROR, exception.getMessage());
     }
 }

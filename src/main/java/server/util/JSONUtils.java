@@ -12,7 +12,7 @@ public class JSONUtils {
     
     private static final ObjectMapper mapper = new ObjectMapper();
     
-    public static Stream<Object> splitObjects(JsonNode node, String title, Class cl) {
+    public static <T> Stream<T> splitObjects(JsonNode node, String title, Class<T> cl) {
     
         var objects = node.get(title).toPrettyString();
         objects = objects.substring(objects.indexOf("[") + 1, objects.lastIndexOf("]"));
@@ -33,7 +33,7 @@ public class JSONUtils {
                 .filter(Objects::nonNull);
     }
     
-    public static Object getObject(JsonNode node, String title, Class cl) throws JsonProcessingException {
+    public static <T> T getObject(JsonNode node, String title, Class<T> cl) throws JsonProcessingException {
         
         return mapper.readValue(node.get(title).toPrettyString(), cl);
     }
