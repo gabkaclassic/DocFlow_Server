@@ -2,6 +2,8 @@ package server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.controller.response.ExistResponse;
+import server.controller.response.Response;
 import server.entity.process.document.Document;
 import server.entity.process.document.DocumentId;
 import server.repository.DocumentRepository;
@@ -34,4 +36,10 @@ public class DocumentService {
         return repository.findById(new DocumentId(processId, title)).orElseThrow();
     }
     
+    public ExistResponse exists(DocumentId documentId) {
+        
+        return ExistResponse.builder()
+                .exist(repository.existsById(documentId))
+                .build().status(Response.STATUS_SUCCESS);
+    }
 }
