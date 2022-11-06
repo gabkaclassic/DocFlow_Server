@@ -73,12 +73,21 @@ public class WebSecurityConfiguration {
                 .defaultSuccessUrl("/info")
                 .and().rememberMe()
                 .and().cors()
-                .and().logout().logoutUrl("/user/logout").logoutSuccessHandler((request, response, authentication) -> {
-                    var username = authentication.getName();
+                .and().logout().logoutUrl("/user/logout").addLogoutHandler((request, response, authentication) -> {
                     
+                    var username = authentication.getName();
                     userService.logout(username);
-                }
-                ).deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll()
+                    
+                }).logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+                    response.getWriter().write(writer.writeValueAsString(
+                                    Response.successResponse(Response.SUCCESS_LOGOUT)
+                            )
+                    );
+                })
+                .deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll()
                 .and().exceptionHandling()
                 .and().csrf().disable()
                 .sessionManagement().maximumSessions(3).maxSessionsPreventsLogin(true);
