@@ -9,6 +9,7 @@ import server.controller.response.Response;
 import server.controller.response.StepResponse;
 import server.entity.process.Process;
 import server.entity.process.Step;
+import server.entity.process.StepId;
 import server.service.StepService;
 
 
@@ -28,9 +29,9 @@ public class StepController {
     }
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public StepResponse getStepInfo(@RequestParam Long stepId) {
+    public StepResponse getStepInfo(@RequestParam String stepId) throws JsonProcessingException {
 
-        return stepService.getStep(stepId);
+        return stepService.getStep(mapper.readValue(stepId, StepId.class));
     }
     
     @GetMapping(value = "/approve", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,10 +45,4 @@ public class StepController {
         
         return stepService.refuse(processId);
     }
-    
-    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response updateStep(@RequestParam String step) throws JsonProcessingException {
-        
-        return stepService.update(mapper.readValue(step, Step.class));
-    }
-    }
+}

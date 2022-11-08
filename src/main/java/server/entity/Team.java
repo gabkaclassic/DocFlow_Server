@@ -11,15 +11,18 @@ import server.entity.process.Process;
 import server.entity.user.Roles;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "teams")
 @Data
 @NoArgsConstructor
 @JsonDeserialize(using = TeamDeserializer.class)
-public class Team {
+public class Team implements Serializable {
     
     @Id
     @Column
@@ -32,9 +35,9 @@ public class Team {
             name = "teams_participants",
             joinColumns = @JoinColumn(name = "team_id", nullable = false)
     )
-    private List<String> participants = new ArrayList<>();
+    private Set<String> participants = new HashSet<>();
     
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private List<Process> processes = new ArrayList<>();
     
     @Column
@@ -48,6 +51,16 @@ public class Team {
     public void removeParticipant(String username) {
         
         participants.remove(username);
+    }
+    
+    public void addProcess(Process process) {
+        
+        processes.add(process);
+    }
+    
+    public void addParticipants(List<String> participants) {
+        
+        this.participants.addAll(participants);
     }
 }
 

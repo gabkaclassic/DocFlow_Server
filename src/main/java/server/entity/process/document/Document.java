@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "documents")
 @Data
+@NoArgsConstructor
 @JsonDeserialize(using = DocumentDeserializer.class)
 public class Document {
     
@@ -47,15 +48,15 @@ public class Document {
     @Column
     private String format;
     
-    public Document() {
-        
-        id = new DocumentId();
-    }
-    
     @JsonIgnore
     public String getTitle() {
         
         return id.getTitle();
+    }
+    
+    public String getProcessId() {
+        
+        return id.getProcessId();
     }
     
     public void addComment(String text, Participant author) {
@@ -83,7 +84,7 @@ public class Document {
         this.resources.addAll(resources);
     }
     
-    public void setProcessId(Long id) {
+    public void setProcessId(String id) {
         this.id.setProcessId(id);
     }
 }

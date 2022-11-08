@@ -31,7 +31,7 @@ public class DocumentService {
         repository.saveAll(documents);
     }
     
-    public Document findById(String title, Long processId) {
+    public Document findById(String title, String processId) {
         
         return repository.findById(new DocumentId(processId, title)).orElseThrow();
     }

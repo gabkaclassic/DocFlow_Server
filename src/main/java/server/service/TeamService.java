@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import server.controller.response.ExistResponse;
 import server.controller.response.Response;
 import server.entity.Team;
+import server.entity.process.Process;
 import server.repository.TeamRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TeamService {
@@ -20,12 +22,15 @@ public class TeamService {
     
     private final ObjectMapper mapper;
     
+    private final ProcessService processService;
+    
     @Autowired
-    public TeamService(TeamRepository repository, ParticipantService participantService, ObjectMapper mapper) {
+    public TeamService(TeamRepository repository, ParticipantService participantService, ObjectMapper mapper, ProcessService processService) {
         
         this.repository = repository;
         this.participantService = participantService;
         this.mapper = mapper;
+        this.processService = processService;
     }
     
     public Response createTeam(Team team) {
@@ -106,5 +111,22 @@ public class TeamService {
         participantService.save(participant);
         
         return Response.successResponse(Response.SUCCESS_REFUSE);
+    }
+    
+    public Response addProcess(Team team, Process process) {
+    
+        var id = UUID.randomUUID().toString();
+        process.setId(id);
+        process.getSteps().stream()
+                .peek(step -> step.setProcessId(id))
+                .flatMap(s -> s.getDocuments().stream())
+                .forEach(d -> d.setProcessId(id));
+        
+        team.addProcess(process);
+        
+        
+        repository.save(team);
+        
+        return Response.successResponse(Response.SUCCESS_CREATING);
     }
 }

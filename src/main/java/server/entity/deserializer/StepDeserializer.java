@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import server.entity.process.Participant;
 import server.entity.process.Rules;
 import server.entity.process.Step;
+import server.entity.process.StepId;
 import server.entity.process.document.Document;
 import server.util.JSONUtils;
 
@@ -34,7 +35,7 @@ public class StepDeserializer extends StdDeserializer<Step> {
         
         JsonNode node = jp.getCodec().readTree(jp);
         var step = new Step();
-        step.setId(node.get("id").asLong());
+        step.setId(JSONUtils.getObject(node, "id", StepId.class));
         step.setTitle(node.get("title").textValue());
         step.setNumber(node.get("number").asInt());
         var map = JSONUtils.getObject(node, "rules", Map.class);

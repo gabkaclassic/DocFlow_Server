@@ -36,7 +36,7 @@ public class TeamDeserializer extends StdDeserializer<Team> {
         team.setTeamLeaderId(node.get("teamLeaderId").asLong());
         team.setParticipants(JSONUtils.splitObjects(node, "participants", String.class)
                 .map(String.class::cast)
-                .collect(Collectors.toList())
+                .collect(Collectors.toSet())
         );
         team.setProcesses(JSONUtils.splitObjects(node, "processes", Process.class)
                 .map(Process.class::cast)

@@ -5,12 +5,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import server.entity.process.Step;
+import server.entity.process.StepId;
 
 import java.util.List;
 
 @Repository
 @Transactional
-public interface StepRepository extends JpaRepository<Step, Long>, CrudRepository<Step, Long> {
+public interface StepRepository extends JpaRepository<Step, StepId>, CrudRepository<Step, StepId> {
     
     @Transactional
     <S extends Step> List<S> saveAll(Iterable<S> entities);

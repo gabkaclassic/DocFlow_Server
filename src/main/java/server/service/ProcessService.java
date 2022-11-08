@@ -5,8 +5,13 @@ import org.springframework.stereotype.Service;
 import server.controller.response.ExistResponse;
 import server.controller.response.Response;
 import server.entity.process.Process;
+import server.entity.process.Step;
+import server.entity.process.StepId;
 import server.repository.ProcessRepository;
 import server.repository.StepRepository;
+
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProcessService {
@@ -29,19 +34,23 @@ public class ProcessService {
         
         repository.save(process);
     }
-        public Response createProcess(Process process) {
+    public Response createProcess(Process process) {
     
-            repository.save(process);
-            process.getSteps().stream()
-                    .flatMap(step -> step.getDocuments().stream())
-                    .distinct()
-                    .forEach(documentService::save);
-            
-            var response = new Response();
-            response.setStatus(Response.STATUS_SUCCESS);
-            response.setMessage(Response.SUCCESS_CREATING);
-            
-            return response;
+
+        var id = UUID.randomUUID().toString();
+        process.setId(id);
+        process.getSteps().stream()
+                .peek(step -> step.setProcessId(id))
+                .flatMap(s -> s.getDocuments().stream())
+                .forEach(d -> d.setProcessId(id));
+        
+        repository.save(process);
+        
+        var response = new Response();
+        response.setStatus(Response.STATUS_SUCCESS);
+        response.setMessage(Response.SUCCESS_CREATING);
+        
+        return response;
     }
     
     public Process findById(Long processId) {

@@ -46,11 +46,16 @@ public class ParticipantService {
         return InfoResponse.builder()
                 .participant(participant)
                 .teams(participant.getTeams())
-                .processes(getProcesses(participant))
+                .processes(participant.getTeams().stream()
+                        .flatMap(t -> t.getProcesses().stream())
+                        .filter(p -> p.getSteps().stream()
+                                .anyMatch(s -> s.getRules().containsKey(participant.getUsername()))
+                        )
+                        .collect(Collectors.toList())
+                )
                 .build()
                 .status(Response.STATUS_SUCCESS)
                 .message(InfoResponse.SUCCESS_LOADING);
-        
     }
     
     public Optional<Participant> findById(Long participantId) {
@@ -70,7 +75,6 @@ public class ParticipantService {
         var participant = user.getClient();
         
         return InfoResponse.builder()
-                .teams(participant.getTeams())
                 .build()
                 .status(Response.STATUS_SUCCESS)
                 .message(Response.SUCCESS_LOADING);
@@ -87,7 +91,6 @@ public class ParticipantService {
         var participant = user.getClient();
     
         return InfoResponse.builder()
-                .processes(getProcesses(participant))
                 .build()
                 .status(Response.STATUS_SUCCESS)
                 .message(Response.SUCCESS_LOADING);

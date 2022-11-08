@@ -6,10 +6,12 @@ import server.controller.response.Response;
 import server.controller.response.StepResponse;
 import server.entity.process.Process;
 import server.entity.process.Step;
+import server.entity.process.StepId;
 import server.repository.StepRepository;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class StepService {
@@ -31,13 +33,13 @@ public class StepService {
         this.documentService = documentService;
     }
     
-    public Step findById(Long id) {
+    public Step findById(StepId id) {
         
         
         return repository.findById(id).orElseThrow();
     }
     
-    public StepResponse getStep(Long stepId) {
+    public StepResponse getStep(StepId stepId) {
         
         Step step;
         StepResponse response;
@@ -73,7 +75,11 @@ public class StepService {
             processService.save(process);
     
             response = StepResponse.builder()
-                    .step(process.getCurrentStep()).build()
+                    .step(process.getSteps().stream()
+                            .filter(s -> Objects.equals(s.getNumber(), process.getCurrentStep()))
+                            .findFirst().get()
+                    )
+                    .build()
                     .status(Response.STATUS_SUCCESS)
                     .message(Response.SUCCESS_LOADING);
         }
@@ -98,7 +104,11 @@ public class StepService {
             processService.save(process);
         
             response = StepResponse.builder()
-                    .step(process.getCurrentStep()).build()
+                    .step(process.getSteps().stream()
+                            .filter(s -> Objects.equals(s.getNumber(), process.getCurrentStep()))
+                            .findFirst().get()
+                    )
+                    .build()
                     .status(Response.STATUS_SUCCESS)
                     .message(Response.SUCCESS_LOADING);
         }

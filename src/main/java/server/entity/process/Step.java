@@ -16,32 +16,55 @@ import java.util.*;
 @JsonDeserialize(using = StepDeserializer.class)
 public class Step {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @EmbeddedId
+    private StepId id;
     
     @Column
-    private int number;
+    private Integer number;
     
-    @Column
-    private String title;
-    
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     @JoinTable(
-            name = "step_documents"
+            name = "step_documents",
+            joinColumns = {
+                    @JoinColumn(name = "processId", referencedColumnName = "processId"),
+                    @JoinColumn(name = "title", referencedColumnName = "title")
+            }
     )
     private Set<Document> documents = new HashSet<>();
     
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(
             name = "step_participant_rule",
-            joinColumns = @JoinColumn(name = "participant_id")
+            joinColumns = {
+                    @JoinColumn(name = "processId", referencedColumnName = "processId"),
+                    @JoinColumn(name = "title", referencedColumnName = "title")
+            }
     )
-    @MapKeyColumn(name = "step_id")
+    @MapKeyColumn(name = "participant_id")
     private Map<String, Rules> rules = new HashMap<>();
     public void addDocuments(Set<Document> documents) {
         
         this.documents.addAll(documents);
+    }
+    
+    public String getProcessId() {
+        
+        return id.getProcessId();
+    }
+    
+    public String getTitle() {
+        
+        return id.getTitle();
+    }
+    
+    public void setProcessId(String processId) {
+        
+        id.setProcessId(processId);
+    }
+    
+    public void setTitle(String title) {
+        
+        id.setTitle(title);
     }
 }
 
