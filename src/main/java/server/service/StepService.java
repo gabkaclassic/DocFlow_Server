@@ -62,66 +62,6 @@ public class StepService {
     
         return response;
     }
-    
-    public StepResponse approve(Long processId) {
-        
-        Process process;
-        StepResponse response;
-        
-        try {
-            
-            process = processService.findById(processId);
-            process.nextStep();
-            processService.save(process);
-    
-            response = StepResponse.builder()
-                    .step(process.getSteps().stream()
-                            .filter(s -> Objects.equals(s.getNumber(), process.getCurrentStep()))
-                            .findFirst().get()
-                    )
-                    .build()
-                    .status(Response.STATUS_SUCCESS)
-                    .message(Response.SUCCESS_LOADING);
-        }
-        catch (NoSuchElementException e) {
-            
-            response = StepResponse.builder().build()
-                    .status(Response.STATUS_ERROR)
-                    .message(e.getMessage());
-        }
-        
-        return response;
-    }
-    
-    public StepResponse refuse(Long processId) {
-        Process process;
-        StepResponse response;
-    
-        try {
-        
-            process = processService.findById(processId);
-            process.previousStep();
-            processService.save(process);
-        
-            response = StepResponse.builder()
-                    .step(process.getSteps().stream()
-                            .filter(s -> Objects.equals(s.getNumber(), process.getCurrentStep()))
-                            .findFirst().get()
-                    )
-                    .build()
-                    .status(Response.STATUS_SUCCESS)
-                    .message(Response.SUCCESS_LOADING);
-        }
-        catch (NoSuchElementException e) {
-        
-            response = StepResponse.builder().build()
-                    .status(Response.STATUS_ERROR)
-                    .message(e.getMessage());
-        }
-    
-        return response;
-    }
-    
     public Response update(Step step) {
         
         repository.save(step);

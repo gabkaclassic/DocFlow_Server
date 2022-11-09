@@ -18,7 +18,7 @@ import java.io.Serializable;
 @JsonDeserialize(using = DocumentIdDeserializer.class)
 public class DocumentId implements Serializable {
 
-    private String processId;
+    private String stepTitle;
     
     private String title;
 }

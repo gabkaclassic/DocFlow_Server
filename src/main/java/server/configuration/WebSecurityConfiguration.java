@@ -51,12 +51,8 @@ public class WebSecurityConfiguration {
         security
                 .authorizeRequests()
                 .antMatchers( "/user/login", "/user/logout", "/user/registry", "/", "/favicon.ico", "/robots.txt").permitAll().anyRequest().authenticated()
-                .and().formLogin().loginPage("/user/login").successHandler((request, response, authentication) -> {
-                    var username = authentication.getName();
- 
-                    userService.login(username);
-                }
-                ).failureHandler((request, response, exception) -> {
+                .and().formLogin().loginPage("/user/login")
+                .failureHandler((request, response, exception) -> {
                     try {
                 
                         response.setStatus(HttpServletResponse.SC_OK);
@@ -66,6 +62,7 @@ public class WebSecurityConfiguration {
                                         InfoResponse.builder().build().status(Response.STATUS_ERROR).message(Response.INVALID_LOGIN_PROCESS)
                                 )
                         );
+                        
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -73,7 +70,9 @@ public class WebSecurityConfiguration {
                 .defaultSuccessUrl("/info")
                 .and().rememberMe()
                 .and().cors()
-                .and().logout().logoutUrl("/user/logout").addLogoutHandler((request, response, authentication) -> {
+                .and().logout().logoutUrl("/user/logout")
+                .clearAuthentication(false)
+                .addLogoutHandler((request, response, authentication) -> {
                     
                     var username = authentication.getName();
                     userService.logout(username);

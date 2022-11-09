@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import server.entity.deserializer.DocumentDeserializer;
 import server.entity.process.Participant;
 
@@ -25,21 +26,21 @@ public class Document {
     @CollectionTable(
             name = "documents_comments",
             joinColumns = {
-                    @JoinColumn(name = "processId", referencedColumnName = "processId"),
+                    @JoinColumn(name = "stepTitle", referencedColumnName = "stepTitle"),
                     @JoinColumn(name = "title", referencedColumnName = "title")
             }
     )
     private List<String> comments = new ArrayList<>();
     
     @Column
-    @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     private byte[] file;
     
     @ElementCollection
     @CollectionTable(
             name = "documents_resources",
             joinColumns = {
-                    @JoinColumn(name = "processId", referencedColumnName = "processId"),
+                    @JoinColumn(name = "stepTitle", referencedColumnName = "stepTitle"),
                     @JoinColumn(name = "title", referencedColumnName = "title")
             }
     )
@@ -54,9 +55,9 @@ public class Document {
         return id.getTitle();
     }
     
-    public String getProcessId() {
+    public String getStepTitle() {
         
-        return id.getProcessId();
+        return id.getStepTitle();
     }
     
     public void addComment(String text, Participant author) {
@@ -84,8 +85,8 @@ public class Document {
         this.resources.addAll(resources);
     }
     
-    public void setProcessId(String id) {
-        this.id.setProcessId(id);
+    public void setStepTitle(String title) {
+        this.id.setStepTitle(title);
     }
 }
 

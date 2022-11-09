@@ -56,8 +56,8 @@ public class ExistController {
     }
     
     @GetMapping(value = "/document", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ExistResponse documentExists(@RequestParam String processId, @RequestParam String title) {
+    public ExistResponse documentExists(@RequestParam String stepTitle, @RequestParam String title) {
         
-        return documentService.exists(new DocumentId(processId, title));
+        return documentService.exists(new DocumentId(stepTitle, title));
     }
 }

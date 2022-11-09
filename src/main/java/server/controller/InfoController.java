@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.controller.response.InfoResponse;
 import server.service.ParticipantService;
+import server.service.UserService;
 
 @RestController
 @RequestMapping("/info")
@@ -15,16 +16,23 @@ public class InfoController {
     
     private final ParticipantService participantService;
     
+    private final UserService userService;
+    
     @Autowired
-    public InfoController(ParticipantService participantService) {
+    public InfoController(ParticipantService participantService, UserService userService) {
         
         this.participantService = participantService;
+        this.userService = userService;
     }
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public InfoResponse getGeneralInfo(Authentication auth) {
 
-        return participantService.loadProcessesAndTeams(auth.getName());
+        var username = auth.getName();
+        
+        userService.login(username);
+        
+        return participantService.loadProcessesAndTeams(username);
     }
     
     @GetMapping(value = "/teams", produces = MediaType.APPLICATION_JSON_VALUE)

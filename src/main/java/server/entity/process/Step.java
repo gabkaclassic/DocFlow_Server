@@ -22,7 +22,7 @@ public class Step {
     @Column
     private Integer number;
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "step_documents",
             joinColumns = {

@@ -117,10 +117,14 @@ public class TeamService {
     
         var id = UUID.randomUUID().toString();
         process.setId(id);
-        process.getSteps().stream()
-                .peek(step -> step.setProcessId(id))
-                .flatMap(s -> s.getDocuments().stream())
-                .forEach(d -> d.setProcessId(id));
+    
+        for(var step: process.getSteps()) {
+        
+            step.setProcessId(id);
+            var title = step.getTitle();
+        
+            step.getDocuments().forEach(document -> document.setStepTitle(title));
+        }
         
         team.addProcess(process);
         

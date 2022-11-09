@@ -3,6 +3,7 @@ package server.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import server.controller.response.InfoResponse;
 import server.controller.response.Response;
 import server.service.UserService;
 @RestController
@@ -16,7 +17,6 @@ public class UserController {
         
         this.userService = userService;
     }
-    
     @GetMapping(value = "/login/failure", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response failureLogin() {
         

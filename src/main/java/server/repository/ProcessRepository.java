@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import server.entity.process.Process;
 
 @Repository
-public interface ProcessRepository extends CrudRepository<Process, Long>, JpaRepository<Process, Long> {
+public interface ProcessRepository extends CrudRepository<Process, String>, JpaRepository<Process, String> {
     
     boolean existsByTitle(String title);
 }
