@@ -63,4 +63,9 @@ public class Process {
         return steps.stream()
                 .noneMatch(step -> step.getNumber() == currentStep + 1);
     }
+    
+    public Step currentStep() {
+        
+        return steps.stream().filter(s -> Objects.equals(s.getNumber(), currentStep)).findFirst().get();
+    }
 }

@@ -1,6 +1,7 @@
 package server.entity.process;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import server.entity.deserializer.StepDeserializer;
@@ -12,6 +13,7 @@ import java.util.*;
 @Entity
 @Table(name = "steps")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @JsonDeserialize(using = StepDeserializer.class)
 public class Step {

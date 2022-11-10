@@ -1,6 +1,5 @@
 package server.service;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,9 +7,11 @@ import server.controller.response.ExistResponse;
 import server.controller.response.Response;
 import server.controller.response.StepResponse;
 import server.entity.process.Process;
+import server.entity.process.Step;
+import server.entity.process.document.Document;
 import server.repository.ProcessRepository;
-import server.repository.StepRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,11 +21,14 @@ public class ProcessService {
     
     private final SessionFactory sessionFactory;
     
+    private final DocumentService documentService;
+    
     @Autowired
-    public ProcessService(ProcessRepository repository, SessionFactory sessionFactory) {
+    public ProcessService(ProcessRepository repository, SessionFactory sessionFactory, DocumentService documentService) {
     
         this.repository = repository;
         this.sessionFactory = sessionFactory;
+        this.documentService = documentService;
     }
     
     public void save(Process process) {
@@ -32,42 +36,118 @@ public class ProcessService {
         repository.save(process);
     }
     
-    public StepResponse nextStep(String processId) {
+    public Response nextStep(String processId) {
         
-        var process = findById(processId);
+        Step nextStep = null;
+        
+        try(var session = sessionFactory.openSession()) {
 
-        var step = process.nextStep();
-    
-        var session = sessionFactory.openSession();
+            session.beginTransaction();
+            
+            session.createNativeQuery(changeStepQuery(processId, "+")).executeUpdate();
+            
+            var currentStepNumber = session.createQuery(
+                    String.format(
+                            "select process.currentStep from Process process where process.id = '%s'",
+                            processId
+                    ),
+                    Integer.class
+            ).uniqueResult();
+            
+            nextStep = session.createQuery(
+                    String.format(
+                            "from Step where process_id = '%s' and number = %d",
+                            processId, currentStepNumber
+                            ),
+                    Step.class
+            ).uniqueResult();
+            
+            var currentStep = session.createQuery(
+                    String.format(
+                            "from Step where process_id = '%s' and number = %d",
+                            processId, currentStepNumber - 1
+                    ),
+                    Step.class
+            ).uniqueResult();
+            
+            session.createNativeQuery(
+                    String.format(
+                            "update step_documents set title = '%s' where process_id = '%s' and title = '%s'",
+                            nextStep.getTitle(), processId, currentStep.getTitle()
+                    )
+            ).executeUpdate();
+            
+            session.getTransaction().commit();
+            
+        }
+        catch(Exception e) {
+            return Response.errorResponse(Response.SERVER_ERROR);
+        }
         
-        session.beginTransaction();
         
-        session.createNativeQuery(String.format("update processes set current_step = %d where id = '%s'", process.getCurrentStep(), processId)).executeUpdate();
-        session.getTransaction().commit();
-        session.close();
-        
-        return StepResponse.builder()
-                .step(step)
-                .build().status(StepResponse.STATUS_SUCCESS).message(StepResponse.SUCCESS_LOADING);
+        return Response.successResponse(Response.SUCCESS_LOADING);
     }
     
-    public StepResponse previousStep(String processId) {
+    public Response previousStep(String processId) {
     
-        var process = findById(processId);
+        Step previousStep = null;
     
-        var step = process.previousStep();
+        try(var session = sessionFactory.openSession()) {
+        
+            session.beginTransaction();
+        
+            session.createNativeQuery(changeStepQuery(processId, "-")).executeUpdate();
+        
+            var currentStepNumber = session.createQuery(
+                    String.format(
+                            "select process.currentStep from Process process where process.id = '%s'",
+                            processId
+                    ),
+                    Integer.class
+            ).uniqueResult();
     
-        var session = sessionFactory.openSession();
+            previousStep = session.createQuery(
+                    String.format(
+                            "from Step where process_id = '%s' and number = %d",
+                            processId, currentStepNumber
+                    ),
+                    Step.class
+            ).uniqueResult();
+        
+            var currentStep = session.createQuery(
+                    String.format(
+                            "from Step where process_id = '%s' and number = %d",
+                            processId, currentStepNumber + 1
+                    ),
+                    Step.class
+            ).uniqueResult();
+        
+            session.createNativeQuery(
+                    String.format(
+                            "update step_documents set title = '%s' where process_id = '%s' and title = '%s' and documents_step_title = '%s'",
+                            previousStep.getTitle(), processId, currentStep.getTitle(), previousStep.getTitle()
+                    )
+            ).executeUpdate();
+            
+            session.getTransaction().commit();
+            
+        }
+        catch(Exception e) {
+            return Response.errorResponse(Response.SERVER_ERROR);
+        }
     
-        session.beginTransaction();
     
-        session.createNativeQuery(String.format("update processes set current_step = %d where id = '%s'", process.getCurrentStep(), processId)).executeUpdate();
-        session.getTransaction().commit();
-        session.close();
+        return Response.successResponse(Response.SUCCESS_LOADING);
+    }
     
-        return StepResponse.builder()
-                .step(step)
-                .build().status(StepResponse.STATUS_SUCCESS).message(StepResponse.SUCCESS_LOADING);
+    private String changeStepQuery(String processId, String operation) {
+        
+        return String.format(
+                "update processes set current_step = " +
+                        "(select current_step from processes where id = '%s') %s 1 " +
+                        "where id = '%s'",
+                processId, operation, processId
+        );
     }
     public Response createProcess(Process process) {
     

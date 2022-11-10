@@ -49,6 +49,17 @@ public class Document {
     @Column
     private String format;
     
+    public Document(Document other) {
+        
+        id = new DocumentId();
+        setStepTitle(other.getStepTitle());
+        addComments(other.getComments());
+        addResources(other.getResources());
+        setFile(other.getFile());
+        setFormat(other.getFormat());
+        setTitle(other.getTitle());
+    }
+    
     @JsonIgnore
     public String getTitle() {
         
