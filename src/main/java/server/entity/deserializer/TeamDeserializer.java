@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import server.entity.Team;
-import server.entity.process.Participant;
 import server.entity.process.Process;
 import server.util.JSONUtils;
 
@@ -13,12 +12,6 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 public class TeamDeserializer extends StdDeserializer<Team> {
-    
-    
-    public TeamDeserializer() {
-        
-        this(null);
-    }
     
     public TeamDeserializer(Class<?> vc) {
         

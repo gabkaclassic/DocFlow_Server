@@ -9,15 +9,9 @@ import server.entity.process.document.DocumentId;
 import server.util.JSONUtils;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class DocumentDeserializer extends StdDeserializer<Document> {
-    
-    public DocumentDeserializer() {
-        
-        this(null);
-    }
     
     public DocumentDeserializer(Class<?> vc) {
         

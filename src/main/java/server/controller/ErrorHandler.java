@@ -18,10 +18,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public Response handleError(Exception exception) {
         
-        log.warn(exception.getLocalizedMessage());
-        
-        exception.printStackTrace();
-
+        log.error("Error from controller", exception);
         
         return new Response(Response.STATUS_ERROR, exception.getMessage());
     }

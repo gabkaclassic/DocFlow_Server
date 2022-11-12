@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import server.entity.process.Participant;
 import server.entity.process.Rules;
 import server.entity.process.Step;
 import server.entity.process.StepId;
@@ -18,11 +15,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class StepDeserializer extends StdDeserializer<Step> {
-    
-    public StepDeserializer() {
-        
-        this(null);
-    }
     
     public StepDeserializer(Class<?> vc) {
         

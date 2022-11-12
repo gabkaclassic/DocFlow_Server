@@ -3,7 +3,6 @@ package server.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import server.controller.response.InfoResponse;
 import server.controller.response.Response;
 import server.service.UserService;
 @RestController

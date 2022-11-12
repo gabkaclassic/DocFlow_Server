@@ -1,10 +1,11 @@
 package server.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import server.controller.response.Response;
 import server.controller.response.StepResponse;
 import server.entity.process.StepId;
@@ -17,15 +18,12 @@ import server.service.StepService;
 public class StepController {
     
     private final StepService stepService;
-    
-    private final ObjectMapper mapper;
     private final ProcessService processService;
     
     @Autowired
-    public StepController(StepService stepService, ObjectMapper mapper, ProcessService processService) {
+    public StepController(StepService stepService, ProcessService processService) {
         
         this.stepService = stepService;
-        this.mapper = mapper;
         this.processService = processService;
     }
     
@@ -41,7 +39,7 @@ public class StepController {
     }
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public StepResponse getStepInfo(@RequestParam String title, @RequestParam String processId) throws JsonProcessingException {
+    public StepResponse getStepInfo(@RequestParam String title, @RequestParam String processId) {
 
         return stepService.getStep(new StepId(processId, title));
     }

@@ -2,6 +2,7 @@ package server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.ExistResponse;
@@ -11,9 +12,11 @@ import server.entity.process.Process;
 import server.repository.TeamRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class TeamService {
     
     private final TeamRepository repository;
@@ -22,24 +25,26 @@ public class TeamService {
     
     private final ObjectMapper mapper;
     
-    private final ProcessService processService;
-    
     @Autowired
-    public TeamService(TeamRepository repository, ParticipantService participantService, ObjectMapper mapper, ProcessService processService) {
+    public TeamService(TeamRepository repository, ParticipantService participantService, ObjectMapper mapper) {
         
         this.repository = repository;
         this.participantService = participantService;
         this.mapper = mapper;
-        this.processService = processService;
     }
     
     public Response createTeam(Team team) {
         
-        var teamLeader = participantService.findById(team.getTeamLeaderId()).get();
-        team.setTeamLeaderId(teamLeader.getId());
-        
-        save(team);
-        
+        try {
+            var teamLeader = participantService.findById(team.getTeamLeaderId()).orElseThrow();
+            team.setTeamLeaderId(teamLeader.getId());
+    
+            save(team);
+        }
+        catch (NoSuchElementException e) {
+            log.warn("No such team leader exception", e);
+            return Response.errorResponse(Response.NOT_EXIST);
+        }
         return Response.successResponse(Response.SUCCESS_CREATING);
     }
     
@@ -50,30 +55,30 @@ public class TeamService {
     
     public Response addParticipant(String username, String teamId) {
         
-        var participant = participantService.findByOwnerUsername(username);
-        var teamOptional = repository.findById(teamId);
+        try {
+            var participant = participantService.findByOwnerUsername(username);
+            var team = repository.findById(teamId).orElseThrow();
+    
+            team.addParticipant(participant.getOwner().getUsername());
+            participant.addTeam(team);
+            repository.save(team);
+            participantService.save(participant);
+    
+        }
+        catch (NoSuchElementException e) {
         
-        if(teamOptional.isEmpty())
-            return Response.errorResponse(Response.TEAM_NOT_EXIST);
-        
-        var team = teamOptional.get();
-        
-        team.addParticipant(participant.getOwner().getUsername());
-        participant.addTeam(team);
-        repository.save(team);
-        participantService.save(participant);
+            log.warn("No such team exception", e);
+            return Response.errorResponse(Response.NOT_EXIST);
+        }
         
         return Response.successResponse(Response.SUCCESS_INVITE);
     }
     
     public Response addParticipants(String usernames, String teamId) throws JsonProcessingException {
         
-        var teamOptional = repository.findById(teamId);
+        try {
         
-        if(teamOptional.isEmpty())
-            return Response.errorResponse(Response.TEAM_NOT_EXIST);
-        
-        var team = teamOptional.get();
+        var team = repository.findById(teamId).orElseThrow();
     
         List<String> list = mapper.readValue(usernames, List.class);
         
@@ -82,15 +87,14 @@ public class TeamService {
             .map(participantService::findByOwnerUsername)
             .peek(participant -> participant.addTeam(team))
             .forEach(participantService::save);
+        }
+        catch (NoSuchElementException e) {
+    
+            log.warn("No such team exception", e);
+            return Response.errorResponse(Response.NOT_EXIST);
+        }
         
         return Response.successResponse(Response.SUCCESS_INVITE);
-    }
-    
-    public void defineTeam(Team team) {
-        
-        team.getParticipants().stream()
-                .map(participantService::findByOwnerUsername)
-                .forEach(p -> p.addTeam(team));
     }
     
     public ExistResponse exists(String title) {
@@ -102,13 +106,21 @@ public class TeamService {
     
     public Response removeParticipant(String username, String teamId) {
         
-        var team = repository.findById(teamId).get();
-        var participant = participantService.findByOwnerUsername(username);
-        
-        team.removeParticipant(username);
-        participant.removeTeam(team);
-        repository.save(team);
-        participantService.save(participant);
+        try {
+            
+            var team = repository.findById(teamId).orElseThrow();
+            var participant = participantService.findByOwnerUsername(username);
+    
+            team.removeParticipant(username);
+            participant.removeTeam(team);
+            repository.save(team);
+            participantService.save(participant);
+        }
+        catch (NoSuchElementException e) {
+            
+            log.warn("No such team exception", e);
+            return Response.errorResponse(Response.NOT_EXIST);
+        }
         
         return Response.successResponse(Response.SUCCESS_REFUSE);
     }

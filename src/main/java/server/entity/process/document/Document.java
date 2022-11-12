@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import server.entity.deserializer.DocumentDeserializer;
-import server.entity.process.Participant;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -48,52 +47,15 @@ public class Document {
     
     @Column
     private String format;
-    
-    public Document(Document other) {
-        
-        id = new DocumentId();
-        setStepTitle(other.getStepTitle());
-        addComments(other.getComments());
-        addResources(other.getResources());
-        setFile(other.getFile());
-        setFormat(other.getFormat());
-        setTitle(other.getTitle());
-    }
-    
     @JsonIgnore
     public String getTitle() {
         
         return id.getTitle();
     }
     
-    public String getStepTitle() {
-        
-        return id.getStepTitle();
-    }
-    
-    public void addComment(String text, Participant author) {
-        
-        comments.add(String.format("--| From %s |-- %s", author.getUsername(), text));
-    }
-    
-    public void addResource(String value, String description) {
-        
-        resources.add(String.format("%s: %s", description, value));
-    }
-    
     public void setTitle(String title) {
         
         id.setTitle(title);
-    }
-    
-    public void addComments(List<String> comments) {
-        
-        this.comments.addAll(comments);
-    }
-    
-    public void addResources(List<String> resources) {
-        
-        this.resources.addAll(resources);
     }
     
     public void setStepTitle(String title) {

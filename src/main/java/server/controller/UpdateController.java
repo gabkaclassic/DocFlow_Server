@@ -16,8 +16,6 @@ import server.service.DocumentService;
 import server.service.StepService;
 import server.service.TeamService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/update")
 public class UpdateController {

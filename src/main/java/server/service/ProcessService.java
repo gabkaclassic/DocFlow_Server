@@ -1,44 +1,35 @@
 package server.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.ExistResponse;
 import server.controller.response.Response;
-import server.controller.response.StepResponse;
 import server.entity.process.Process;
 import server.entity.process.Step;
-import server.entity.process.document.Document;
 import server.repository.ProcessRepository;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ProcessService {
     
     private final ProcessRepository repository;
     
     private final SessionFactory sessionFactory;
     
-    private final DocumentService documentService;
-    
     @Autowired
-    public ProcessService(ProcessRepository repository, SessionFactory sessionFactory, DocumentService documentService) {
+    public ProcessService(ProcessRepository repository, SessionFactory sessionFactory) {
     
         this.repository = repository;
         this.sessionFactory = sessionFactory;
-        this.documentService = documentService;
-    }
-    
-    public void save(Process process) {
-        
-        repository.save(process);
     }
     
     public Response nextStep(String processId) {
         
-        Step nextStep = null;
+        Step nextStep;
         
         try(var session = sessionFactory.openSession()) {
 
@@ -81,6 +72,7 @@ public class ProcessService {
             
         }
         catch(Exception e) {
+            log.error("Error in the process of transition of next step", e);
             return Response.errorResponse(Response.SERVER_ERROR);
         }
         
@@ -90,7 +82,7 @@ public class ProcessService {
     
     public Response previousStep(String processId) {
     
-        Step previousStep = null;
+        Step previousStep;
     
         try(var session = sessionFactory.openSession()) {
         
@@ -133,6 +125,7 @@ public class ProcessService {
             
         }
         catch(Exception e) {
+            log.error("Error in the process of transition of previous step", e);
             return Response.errorResponse(Response.SERVER_ERROR);
         }
     
@@ -169,11 +162,6 @@ public class ProcessService {
         response.setMessage(Response.SUCCESS_CREATING);
         
         return response;
-    }
-    
-    public Process findById(String processId) {
-        
-        return repository.findById(processId).orElseThrow();
     }
     
     public ExistResponse exists(String title) {

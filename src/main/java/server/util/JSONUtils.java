@@ -3,13 +3,14 @@ package server.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+@Slf4j
 public class JSONUtils {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final Pattern patternClose = Pattern.compile("\\}");
@@ -37,9 +38,9 @@ public class JSONUtils {
                     try {
                         return s.isBlank() ? null : mapper.readValue(s, cl);
                     } catch (JsonProcessingException e) {
-                        e.printStackTrace();
+                        log.warn("Split objects parser exception", e);
+                        return null;
                     }
-                    return null;
                 })
                 .filter(Objects::nonNull);
     }

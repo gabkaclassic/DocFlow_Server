@@ -6,7 +6,6 @@ import server.entity.Team;
 import server.entity.process.Participant;
 import server.entity.process.Process;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder

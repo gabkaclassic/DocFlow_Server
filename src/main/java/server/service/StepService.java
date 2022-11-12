@@ -1,36 +1,26 @@
 package server.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.Response;
 import server.controller.response.StepResponse;
-import server.entity.process.Process;
 import server.entity.process.Step;
 import server.entity.process.StepId;
 import server.repository.StepRepository;
 
-import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
+@Slf4j
 public class StepService {
     
     private final StepRepository repository;
     
-    private final ParticipantService participantService;
-    
-    private final ProcessService processService;
-    
-    private final DocumentService documentService;
-    
     @Autowired
-    public StepService(StepRepository repository, ParticipantService participantService, ProcessService processService, DocumentService documentService) {
+    public StepService(StepRepository repository) {
         
         this.repository = repository;
-        this.participantService = participantService;
-        this.processService = processService;
-        this.documentService = documentService;
     }
     
     public Step findById(StepId id) {
@@ -55,6 +45,8 @@ public class StepService {
         }
         catch (NoSuchElementException e) {
     
+            log.warn("No such step exception", e);
+            
             response = StepResponse.builder().build()
                     .status(Response.STATUS_ERROR)
                     .message(e.getMessage());
@@ -67,15 +59,5 @@ public class StepService {
         repository.save(step);
         
         return Response.successResponse(Response.SUCCESS_LOADING);
-    }
-    
-    public void save(Step currentStep) {
-        
-        repository.save(currentStep);
-    }
-    
-    public void saveAll(Collection<Step> steps) {
-        
-        repository.saveAll(steps);
     }
 }

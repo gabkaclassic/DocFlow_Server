@@ -1,20 +1,19 @@
 package server.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.InfoResponse;
 import server.controller.response.Response;
 import server.entity.process.Participant;
-import server.entity.process.Process;
 import server.entity.user.User;
 import server.repository.ParticipantRepository;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ParticipantService {
     
     private final ParticipantRepository repository;
@@ -67,12 +66,14 @@ public class ParticipantService {
     
         var user = userService.loadUserByUsername(username);
     
-        if(user == null)
+        if(user == null) {
+            
+            log.debug("User doesn't exists", Thread.currentThread().getStackTrace());
+            
             return InfoResponse.builder().build()
                     .status(Response.STATUS_ERROR)
                     .message(Response.SERVER_ERROR);
-        
-        var participant = user.getClient();
+        }
         
         return InfoResponse.builder()
                 .build()
@@ -83,24 +84,19 @@ public class ParticipantService {
     public InfoResponse loadProcesses(String username) {
         var user = userService.loadUserByUsername(username);
     
-        if(user == null)
+        if(user == null) {
+        
+            log.debug("User doesn't exists", Thread.currentThread().getStackTrace());
+        
             return InfoResponse.builder().build()
                     .status(Response.STATUS_ERROR)
                     .message(Response.SERVER_ERROR);
-    
-        var participant = user.getClient();
+        }
     
         return InfoResponse.builder()
                 .build()
                 .status(Response.STATUS_SUCCESS)
                 .message(Response.SUCCESS_LOADING);
-    }
-    
-    private List<Process> getProcesses(Participant participant) {
-        
-        return participant.getTeams().stream()
-                .flatMap(team -> team.getProcesses().stream())
-                .collect(Collectors.toList());
     }
     
     public Participant findByOwnerUsername(String username) {
@@ -113,10 +109,5 @@ public class ParticipantService {
     public void save(Participant participant) {
         
         repository.save(participant);
-    }
-    
-    public void saveAll(Collection<Participant> participants) {
-        
-        repository.saveAll(participants);
     }
 }

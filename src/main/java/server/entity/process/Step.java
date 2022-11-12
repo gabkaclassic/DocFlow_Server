@@ -8,7 +8,10 @@ import server.entity.deserializer.StepDeserializer;
 import server.entity.process.document.Document;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "steps")
@@ -44,15 +47,6 @@ public class Step {
     )
     @MapKeyColumn(name = "participant_id")
     private Map<String, Rules> rules = new HashMap<>();
-    public void addDocuments(Set<Document> documents) {
-        
-        this.documents.addAll(documents);
-    }
-    
-    public String getProcessId() {
-        
-        return id.getProcessId();
-    }
     
     public String getTitle() {
         

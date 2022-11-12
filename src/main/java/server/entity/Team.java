@@ -1,14 +1,10 @@
 package server.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import server.entity.deserializer.TeamDeserializer;
-import server.entity.process.Participant;
 import server.entity.process.Process;
-import server.entity.user.Roles;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -56,11 +52,6 @@ public class Team implements Serializable {
     public void addProcess(Process process) {
         
         processes.add(process);
-    }
-    
-    public void addParticipants(List<String> participants) {
-        
-        this.participants.addAll(participants);
     }
 }
 

@@ -10,13 +10,6 @@ import server.entity.user.User;
 import java.io.IOException;
 
 public class UserDeserializer extends StdDeserializer<User> {
-    
-    
-    public UserDeserializer() {
-        
-        this(null);
-    }
-    
     public UserDeserializer(Class<?> vc) {
         
         super(vc);

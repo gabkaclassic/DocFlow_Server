@@ -1,6 +1,5 @@
 package server.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,16 +24,13 @@ public class ExistController {
     
     private final DocumentService documentService;
     
-    private final ObjectMapper mapper;
-    
     @Autowired
-    public ExistController(TeamService teamService, UserService userService, ProcessService processService, DocumentService documentService, ObjectMapper mapper) {
+    public ExistController(TeamService teamService, UserService userService, ProcessService processService, DocumentService documentService) {
     
         this.teamService = teamService;
         this.userService = userService;
         this.processService = processService;
         this.documentService = documentService;
-        this.mapper = mapper;
     }
     
     @GetMapping(value = "/team", produces = MediaType.APPLICATION_JSON_VALUE)

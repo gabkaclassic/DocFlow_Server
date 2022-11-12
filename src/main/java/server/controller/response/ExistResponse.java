@@ -2,7 +2,6 @@ package server.controller.response;
 
 import lombok.Builder;
 import lombok.Data;
-import server.controller.ExistController;
 
 @Builder
 @Data

@@ -12,7 +12,6 @@ import server.entity.user.User;
 import server.repository.ParticipantRepository;
 import server.repository.UserRepository;
 
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -73,12 +72,6 @@ public class UserService implements UserDetailsService {
         
         return response;
     }
-    
-    public Optional<User> findById(Long id) {
-        
-        return userRepository.findById(id);
-    }
-    
     public Response logout(String username) {
         
         userRepository.logout(username);

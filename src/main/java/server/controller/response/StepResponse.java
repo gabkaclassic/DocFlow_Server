@@ -1,12 +1,8 @@
 package server.controller.response;
 
-import lombok.*;
-import server.entity.process.Participant;
+import lombok.Builder;
+import lombok.Data;
 import server.entity.process.Step;
-import org.springframework.beans.factory.annotation.Autowired;
-import server.entity.user.User;
-import server.service.ParticipantService;
-import server.service.StepService;
 
 @Data
 @Builder
