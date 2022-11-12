@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.ExistResponse;
+import server.controller.response.InfoResponse;
+import server.controller.response.ProcessResponse;
 import server.controller.response.Response;
 import server.entity.process.Process;
 import server.entity.process.Step;
@@ -169,5 +171,12 @@ public class ProcessService {
         return ExistResponse.builder()
                 .exist(repository.existsByTitle(title)).build()
                 .status(Response.STATUS_SUCCESS);
+    }
+    
+    public ProcessResponse getInfo(String processId) {
+        
+        return ProcessResponse.builder()
+                .process(repository.findById(processId).orElseThrow())
+                .build().status(Response.STATUS_SUCCESS).message(Response.SUCCESS_LOADING);
     }
 }

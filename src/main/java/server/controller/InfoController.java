@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.controller.response.InfoResponse;
+import server.controller.response.ProcessResponse;
 import server.service.ParticipantService;
+import server.service.ProcessService;
 import server.service.UserService;
 
 @RestController
@@ -16,12 +18,15 @@ public class InfoController {
     
     private final ParticipantService participantService;
     
+    private final ProcessService processService;
+    
     private final UserService userService;
     
     @Autowired
-    public InfoController(ParticipantService participantService, UserService userService) {
+    public InfoController(ParticipantService participantService, ProcessService processService, UserService userService) {
         
         this.participantService = participantService;
+        this.processService = processService;
         this.userService = userService;
     }
     
@@ -45,6 +50,12 @@ public class InfoController {
     public InfoResponse getProcessesInfo(Authentication auth) {
         
         return participantService.loadProcesses(auth.getName());
+    }
+    
+    @GetMapping(value = "/process", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ProcessResponse getProcessInfo(String processId) {
+        
+        return processService.getInfo(processId);
     }
     
 }
