@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Response {
     
-    public static final String STATUS_ERROR = "isError";
+    public static final String STATUS_ERROR = "error";
     public static final String STATUS_SUCCESS = "success";
     public static final String SUCCESS_REFUSE = "Success refuse of invite";
     public static final String SERVER_ERROR = "Error on server side";

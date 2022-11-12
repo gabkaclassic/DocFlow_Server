@@ -10,6 +10,11 @@ import java.io.IOException;
 
 public class StepIdDeserializer extends StdDeserializer<StepId> {
     
+    public StepIdDeserializer() {
+        
+        this(null);
+    }
+    
     public StepIdDeserializer(Class<?> vc) {
         
         super(vc);

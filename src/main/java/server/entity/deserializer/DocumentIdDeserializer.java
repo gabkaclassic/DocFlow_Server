@@ -9,6 +9,12 @@ import server.entity.process.document.DocumentId;
 import java.io.IOException;
 
 public class DocumentIdDeserializer extends StdDeserializer<DocumentId> {
+    
+    public DocumentIdDeserializer() {
+        
+        this(null);
+    }
+    
     public DocumentIdDeserializer(Class<?> vc) {
         
         super(vc);
