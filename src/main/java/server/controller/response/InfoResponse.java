@@ -7,6 +7,7 @@ import server.entity.process.Participant;
 import server.entity.process.Process;
 
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @Data
@@ -14,7 +15,7 @@ public class InfoResponse extends Response {
     
     private Participant participant;
     
-    private List<Team> teams;
+    private Set<Team> teams;
     
     private List<Process> processes;
     

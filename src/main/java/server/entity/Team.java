@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import server.entity.deserializer.TeamDeserializer;
+import server.entity.process.Participant;
 import server.entity.process.Process;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "teams")
@@ -52,6 +50,11 @@ public class Team implements Serializable {
     public void addProcess(Process process) {
         
         processes.add(process);
+    }
+    
+    public void addParticipants(Collection<String> participants) {
+        
+        this.participants.addAll(participants);
     }
 }
 
