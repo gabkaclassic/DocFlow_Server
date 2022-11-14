@@ -10,7 +10,7 @@ import server.entity.user.User;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-
+import java.util.Set;
 
 @Entity
 @Table(name = "participants")
@@ -27,7 +27,7 @@ public class Participant implements Serializable {
     @ToString.Exclude
     private User owner;
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    private List<Team> teams;
+    private Set<Team> teams;
     
     public void addTeam(Team team) {
         
