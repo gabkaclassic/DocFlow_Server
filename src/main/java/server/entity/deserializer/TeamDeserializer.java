@@ -10,6 +10,7 @@ import server.entity.process.Process;
 import server.util.JSONUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class TeamDeserializer extends StdDeserializer<Team> {
@@ -34,8 +35,11 @@ public class TeamDeserializer extends StdDeserializer<Team> {
         team.setTitle(node.get("title").textValue());
         
         team.setTeamLeaderId(node.get("teamLeaderId").asLong());
-        team.setParticipants(JSONUtils.splitObjects(node, "participants", String.class)
-                .map(String.class::cast)
+        team.setParticipants(Arrays.stream(node.get("participants").toPrettyString()
+                        .replace("\"", "")
+                        .replace("[", "").replace("]", "")
+                        .split(","))
+                .map(String::trim)
                 .collect(Collectors.toSet())
         );
         team.setProcesses(JSONUtils.splitObjects(node, "processes", Process.class)

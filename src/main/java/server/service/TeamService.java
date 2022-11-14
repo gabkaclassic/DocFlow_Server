@@ -78,11 +78,12 @@ public class TeamService {
         
         try {
         
-        var team = repository.findById(teamId).orElseThrow();
-    
-        List<String> list = mapper.readValue(usernames, List.class);
+            var team = repository.findById(teamId).orElseThrow();
         
-        list.stream()
+            List<String> list = mapper.readValue(usernames, List.class);
+            team.addParticipants(list);
+        
+            list.stream()
             .map(Object::toString)
             .map(participantService::findByOwnerUsername)
             .peek(participant -> participant.addTeam(team))
