@@ -13,6 +13,7 @@ import server.entity.Team;
 import server.entity.process.Process;
 import server.entity.process.Step;
 import server.service.DocumentService;
+import server.service.ProcessService;
 import server.service.StepService;
 import server.service.TeamService;
 
@@ -26,14 +27,17 @@ public class UpdateController {
     
     private final TeamService teamService;
     
+    private final ProcessService processService;
+    
     private final DocumentService documentService;
     
     @Autowired
-    public UpdateController(ObjectMapper mapper, StepService stepService, TeamService teamService, DocumentService documentService) {
+    public UpdateController(ObjectMapper mapper, StepService stepService, TeamService teamService, ProcessService processService, DocumentService documentService) {
     
         this.mapper = mapper;
         this.stepService = stepService;
         this.teamService = teamService;
+        this.processService = processService;
         this.documentService = documentService;
     }
     
@@ -52,5 +56,11 @@ public class UpdateController {
     public Response updateTeam(@RequestParam String team, @RequestParam String process) throws JsonProcessingException {
         
         return teamService.addProcess(mapper.readValue(team, Team.class), mapper.readValue(process, Process.class));
+    }
+    
+    @PostMapping(value = "/process/finish", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response finishProcess(@RequestParam String processId) {
+        
+        return processService.finish(processId);
     }
 }

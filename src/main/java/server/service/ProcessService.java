@@ -179,4 +179,11 @@ public class ProcessService {
                 .process(repository.findById(processId).orElseThrow())
                 .build().status(Response.STATUS_SUCCESS).message(Response.SUCCESS_LOADING);
     }
+    
+    public Response finish(String processId) {
+        
+        repository.deleteById(processId);
+        
+        return Response.successResponse(Response.SUCCESS_LOADING);
+    }
 }

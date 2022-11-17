@@ -3,6 +3,8 @@ package server.entity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import server.entity.deserializer.TeamDeserializer;
 import server.entity.process.Participant;
 import server.entity.process.Process;
@@ -32,7 +34,9 @@ public class Team implements Serializable {
     private Set<String> participants = new HashSet<>();
     
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    private List<Process> processes = new ArrayList<>();
+    @JoinColumn(name = "processes_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Process> processes = new HashSet<>();
     
     @Column
     private Long teamLeaderId;

@@ -44,7 +44,7 @@ public class TeamDeserializer extends StdDeserializer<Team> {
         );
         team.setProcesses(JSONUtils.splitObjects(node, "processes", Process.class)
                 .map(Process.class::cast)
-                .collect(Collectors.toList())
+                .collect(Collectors.toSet())
         );
         return team;
     }
