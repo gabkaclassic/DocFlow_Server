@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import server.entity.deserializer.DocumentDeserializer;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @JsonDeserialize(using = DocumentDeserializer.class)
-public class Document {
+public class Document implements Serializable {
     
     @EmbeddedId
     private DocumentId id;

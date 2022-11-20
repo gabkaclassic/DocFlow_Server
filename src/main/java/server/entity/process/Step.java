@@ -10,6 +10,7 @@ import server.entity.deserializer.StepDeserializer;
 import server.entity.process.document.Document;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,11 +18,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "steps")
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
 @JsonDeserialize(using = StepDeserializer.class)
-public class Step {
+public class Step implements Serializable {
     
     @EmbeddedId
     private StepId id;
@@ -50,6 +50,11 @@ public class Step {
     @MapKeyColumn(name = "participant_id")
     private Map<String, Rules> rules = new HashMap<>();
     
+    public Step() {
+        
+        id = new StepId();
+    }
+    
     public String getTitle() {
         
         return id.getTitle();
@@ -63,6 +68,19 @@ public class Step {
     public void setTitle(String title) {
         
         id.setTitle(title);
+    }
+    public void addDocument(Document document) {
+        
+        this.documents.add(document);
+    }
+    public void addDocuments(Set<Document> documents) {
+        
+        this.documents.addAll(documents);
+    }
+    
+    public String getProcessId() {
+        
+        return id.getProcessId();
     }
 }
 
