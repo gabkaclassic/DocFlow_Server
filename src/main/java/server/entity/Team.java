@@ -34,7 +34,7 @@ public class Team implements Serializable {
     private Set<String> participants = new HashSet<>();
     
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "processes_id")
+    @JoinColumn(name = "team_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Process> processes = new HashSet<>();
     

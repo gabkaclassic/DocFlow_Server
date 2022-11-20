@@ -103,6 +103,8 @@ public class ParticipantService {
         
         var user = userService.loadUserByUsername(username);
         
+        
+        
         return user.getClient();
     }
     

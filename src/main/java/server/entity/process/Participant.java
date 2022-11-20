@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "participants")
@@ -26,7 +27,7 @@ public class Participant implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private User owner;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Set<Team> teams;
     
     public void addTeam(Team team) {
@@ -36,7 +37,9 @@ public class Participant implements Serializable {
     
     public void removeTeam(Team team) {
      
-        teams.remove(team);
+        teams = teams.stream()
+                .filter(t -> !t.getTitle().equals(team.getTitle()))
+                .collect(Collectors.toSet());
     }
     
     public String getUsername() {

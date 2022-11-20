@@ -10,6 +10,7 @@ import server.entity.deserializer.UserDeserializer;
 import server.entity.process.Participant;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @JsonDeserialize(using = UserDeserializer.class)
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
