@@ -111,11 +111,13 @@ public class TeamService {
             
             var team = repository.findById(teamId).orElseThrow();
             var participant = participantService.findByOwnerUsername(username);
-    
+            if(team.getTeamLeaderId().equals(participant.getId()))
+                return Response.errorResponse(Response.NOT_EXIST);
+            
             team.removeParticipant(username);
             participant.removeTeam(team);
-            repository.save(team);
             participantService.save(participant);
+            repository.save(team);
         }
         catch (NoSuchElementException e) {
             
