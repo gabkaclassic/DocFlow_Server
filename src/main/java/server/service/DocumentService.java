@@ -29,8 +29,14 @@ public class DocumentService {
     
     public Response update(String docs) {
     
-        JSONUtils.splitObjects(docs, Document.class).forEach(repository::save);
+        JSONUtils.splitObjects(docs, Document.class)
+                .forEach(d -> repository.save(d));
         
         return Response.successResponse(Response.SUCCESS_CREATING);
+    }
+    
+    public void update(Document document) {
+        
+        repository.save(document);
     }
 }
