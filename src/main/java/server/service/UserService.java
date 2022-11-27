@@ -14,6 +14,10 @@ import server.repository.UserRepository;
 
 import java.util.regex.Pattern;
 
+/**
+ * Сервис для сущности "Пользователь"
+ * @see User
+ * */
 @Service
 public class UserService implements UserDetailsService {
     

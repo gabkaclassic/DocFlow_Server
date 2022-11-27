@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import server.controller.response.Response;
 
+/**
+ * Обработчик ошибок всех контроллеров
+ * */
 @Slf4j
 @ControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {

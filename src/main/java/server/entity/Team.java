@@ -6,13 +6,17 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import server.entity.deserializer.TeamDeserializer;
-import server.entity.process.Participant;
 import server.entity.process.Process;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * Сущность "Команда"
+ * */
 @Entity
 @Table(name = "teams")
 @Data

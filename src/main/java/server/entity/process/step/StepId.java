@@ -1,4 +1,4 @@
-package server.entity.process;
+package server.entity.process.step;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;

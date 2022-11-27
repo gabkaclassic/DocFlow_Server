@@ -15,6 +15,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Сущность "Пользователь"
+ * */
 @Entity
 @Table(name = "users")
 @Getter
@@ -42,6 +45,10 @@ public class User implements UserDetails, Serializable {
     @JsonIgnore
     private Participant client;
     
+    /**
+     * Роли пользователя
+     * @see Roles
+     * */
     @ElementCollection(
         fetch = FetchType.EAGER,
         targetClass = Roles.class

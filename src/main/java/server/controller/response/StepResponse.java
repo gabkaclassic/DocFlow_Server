@@ -2,8 +2,13 @@ package server.controller.response;
 
 import lombok.Builder;
 import lombok.Data;
-import server.entity.process.Step;
+import server.entity.process.step.Step;
 
+/**
+ * Тип ответа для получения информации о шаге
+ * @see Response
+ * @see Step
+ * */
 @Data
 @Builder
 public class StepResponse extends Response {

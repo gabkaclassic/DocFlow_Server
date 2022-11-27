@@ -4,12 +4,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import server.entity.deserializer.ProcessDeserializer;
+import server.entity.process.step.Step;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Сущность "Процесс"
+ * */
 @Entity
 @Table(name = "processes")
 @NoArgsConstructor

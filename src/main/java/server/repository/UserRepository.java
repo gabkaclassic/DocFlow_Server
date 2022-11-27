@@ -6,8 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import server.entity.process.document.Document;
 import server.entity.user.User;
 
+/**
+ * Репозиторий для сущности "Пользователь"
+ * @see User
+ * */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, CrudRepository<User, Long> {
     

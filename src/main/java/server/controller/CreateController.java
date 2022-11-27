@@ -11,6 +11,10 @@ import server.entity.process.Process;
 import server.service.ProcessService;
 import server.service.TeamService;
 
+/**
+ * Контроллер для обработки процесса создания сущностей
+ * @see Response
+ * */
 @RestController
 @RequestMapping("/create")
 public class CreateController {
@@ -29,12 +33,20 @@ public class CreateController {
         this.mapper = mapper;
     }
     
+    /**
+     * Обработка запроса создания команд
+     * @see Team
+     * */
     @PostMapping(value = "/team", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response createTeam(@RequestParam String team) throws JsonProcessingException {
     
         return teamService.createTeam(mapper.readValue(team, Team.class));
     }
     
+    /**
+     * Обработка запроса создания процессов
+     * @see Process
+     * */
     @PostMapping(value = "/process", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response createProcess(@RequestParam String process) throws JsonProcessingException {
 

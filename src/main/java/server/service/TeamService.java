@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+/**
+ * Сервис для сущности "Команда"
+ * @see Team
+ * */
 @Service
 @Slf4j
 public class TeamService {

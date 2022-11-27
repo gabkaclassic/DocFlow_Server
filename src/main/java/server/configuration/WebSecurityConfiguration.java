@@ -23,6 +23,10 @@ import server.service.UserService;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Класс-конфигурация приложения
+ * Производит настройку доступа запросов, логику аутентификации и работы сессий
+ * */
 @Configuration
 @EnableWebSecurity
 @EnableWebMvc
@@ -30,21 +34,17 @@ import java.nio.charset.StandardCharsets;
 public class WebSecurityConfiguration {
     
     private final ObjectWriter writer;
-    private final BCryptPasswordEncoder encoder;
-    
-    private final UserDetailsService userDetailsService;
     private final UserService userService;
     
     @Autowired
-    public WebSecurityConfiguration(ObjectWriter writer, BCryptPasswordEncoder encoder, UserDetailsService userDetailsService, UserService userService) {
-    
+    public WebSecurityConfiguration(ObjectWriter writer, UserService userService) {
         this.writer = writer;
-    
-        this.encoder = encoder;
-        this.userDetailsService = userDetailsService;
         this.userService = userService;
     }
     
+    /**
+     * Конфигурация аутентификации, доступа к отдельным доменам, работы сессий
+     * */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
     
@@ -93,6 +93,12 @@ public class WebSecurityConfiguration {
     
         return security.build();
     }
+    /**
+     * Конфигурация сервиса для сущности пользователей
+     * @see UserService
+     * и шифрования их паролей
+     * @see EncryptPasswordConfiguration
+     * */
     @Bean
     public AuthenticationManager authenticationManager(BCryptPasswordEncoder encoder,
                                                        UserDetailsService userDetailsService,
@@ -104,6 +110,9 @@ public class WebSecurityConfiguration {
                 .and().build();
     }
     
+    /**
+     * Конфигурация обработки в URL разных вариаций слэшей
+     * */
     @Bean
     public HttpFirewall allowSlashInUrl() {
         

@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.Response;
 import server.controller.response.StepResponse;
-import server.entity.process.Step;
-import server.entity.process.StepId;
+import server.entity.process.step.Step;
+import server.entity.process.step.StepId;
 import server.entity.process.document.Document;
 import server.repository.StepRepository;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Сервис для сущности "Шаг"
+ * @see Step
+ * */
 @Service
 @Slf4j
 public class StepService {

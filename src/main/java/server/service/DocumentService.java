@@ -9,6 +9,10 @@ import server.entity.process.document.DocumentId;
 import server.repository.DocumentRepository;
 import server.util.JSONUtils;
 
+/**
+ * Сервис для сущности "Документ"
+ * @see Document
+ * */
 @Service
 public class DocumentService {
     

@@ -12,6 +12,10 @@ import server.repository.ParticipantRepository;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для сущности "Участник"
+ * @see Participant
+ * */
 @Service
 @Slf4j
 public class ParticipantService {

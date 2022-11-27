@@ -9,6 +9,11 @@ import server.entity.process.Process;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Тип ответа для получения всей информации, связанной с конкретным аккаунтом участника
+ * @see Response
+ * @see Participant
+ * */
 @Builder
 @Data
 public class InfoResponse extends Response {

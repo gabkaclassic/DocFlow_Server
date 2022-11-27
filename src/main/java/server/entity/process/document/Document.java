@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Сущность "Документ"
+ * */
 @Entity
 @Table(name = "documents")
 @Data
@@ -19,6 +22,9 @@ import java.util.List;
 @JsonDeserialize(using = DocumentDeserializer.class)
 public class Document implements Serializable {
     
+    /**
+     * @see DocumentId
+     * */
     @EmbeddedId
     private DocumentId id;
     

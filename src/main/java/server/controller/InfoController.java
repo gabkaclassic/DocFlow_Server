@@ -12,6 +12,9 @@ import server.service.ParticipantService;
 import server.service.ProcessService;
 import server.service.UserService;
 
+/**
+ * Контроллер для обработки процесса создания сущностей
+ * */
 @RestController
 @RequestMapping("/info")
 public class InfoController {

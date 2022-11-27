@@ -1,12 +1,10 @@
-package server.entity.process;
+package server.entity.process.step;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import server.entity.deserializer.StepDeserializer;
+import server.entity.process.Rules;
 import server.entity.process.document.Document;
 
 import javax.persistence.*;

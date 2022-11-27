@@ -10,6 +10,9 @@ import server.entity.deserializer.DocumentIdDeserializer;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+/**
+ * ID для сущности "Документ", состоящее из наименования шага, на котором документ был создан, и названия документа
+ * */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

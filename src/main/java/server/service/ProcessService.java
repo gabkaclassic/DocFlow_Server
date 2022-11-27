@@ -5,15 +5,18 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.ExistResponse;
-import server.controller.response.InfoResponse;
 import server.controller.response.ProcessResponse;
 import server.controller.response.Response;
 import server.entity.process.Process;
-import server.entity.process.Step;
+import server.entity.process.step.Step;
 import server.repository.ProcessRepository;
 
 import java.util.UUID;
 
+/**
+ * Сервис для сущности "Процесс"
+ * @see Process
+ * */
 @Service
 @Slf4j
 public class ProcessService {
