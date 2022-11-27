@@ -16,6 +16,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Сущность "Шаг"
+ * */
 @Entity
 @Table(name = "steps")
 @AllArgsConstructor
@@ -23,6 +26,9 @@ import java.util.Set;
 @JsonDeserialize(using = StepDeserializer.class)
 public class Step implements Serializable {
     
+    /**
+     * @see StepId
+     * */
     @EmbeddedId
     private StepId id;
     
@@ -39,6 +45,11 @@ public class Step implements Serializable {
     )
     private Set<Document> documents = new HashSet<>();
     
+    
+    /**
+     * Права для работы с документами на данном шаге
+     * @see Rules
+     * */
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(
             name = "step_participant_rule",

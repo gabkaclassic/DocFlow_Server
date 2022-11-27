@@ -10,6 +10,9 @@ import server.entity.deserializer.StepIdDeserializer;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+/**
+ * ID для сущности "Шаг", состоящее их наименования шага и ID процесса, в котором он был создан
+ * */
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
