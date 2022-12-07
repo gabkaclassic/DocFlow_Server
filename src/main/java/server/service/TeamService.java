@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.controller.response.ExistResponse;
 import server.controller.response.Response;
-import server.entity.Team;
+import server.entity.team.Invite;
+import server.entity.team.Team;
 import server.entity.process.Process;
 import server.repository.TeamRepository;
 
@@ -27,13 +28,16 @@ public class TeamService {
     
     private final ParticipantService participantService;
     
+    private final InviteService inviteService;
+    
     private final ObjectMapper mapper;
     
     @Autowired
-    public TeamService(TeamRepository repository, ParticipantService participantService, ObjectMapper mapper) {
+    public TeamService(TeamRepository repository, ParticipantService participantService, InviteService inviteService, ObjectMapper mapper) {
         
         this.repository = repository;
         this.participantService = participantService;
+        this.inviteService = inviteService;
         this.mapper = mapper;
     }
     
@@ -57,17 +61,18 @@ public class TeamService {
         repository.save(team);
     }
     
-    public Response addParticipant(String username, String teamId) {
+    public Response sendInvite(String username, String teamId) {
         
         try {
             var participant = participantService.findByOwnerUsername(username);
             var team = repository.findById(teamId).orElseThrow();
     
-            team.addParticipant(participant.getOwner().getUsername());
-            participant.addTeam(team);
-            repository.save(team);
+            var invite = new Invite(team, participant);
+            
+            participant.addInvite(invite);
+            
+            inviteService.save(invite);
             participantService.save(participant);
-    
         }
         catch (NoSuchElementException e) {
         
@@ -78,20 +83,45 @@ public class TeamService {
         return Response.successResponse(Response.SUCCESS_INVITE);
     }
     
-    public Response addParticipants(String usernames, String teamId) throws JsonProcessingException {
+    public Response accessInvite(Long inviteId) {
+        
+        var invite = inviteService.findById(inviteId);
+        var participant = invite.getCandidate();
+        var team = invite.getTeam();
+        
+        participant.removeInvite(invite);
+        
+        team.addParticipant(participant.getOwner().getUsername());
+        participant.addTeam(team);
+        repository.save(team);
+        participantService.save(participant);
+        inviteService.remove(invite);
+        
+        return Response.successResponse(Response.SUCCESS_INVITE);
+    }
+    
+    public Response refuseInvite(Long inviteId) {
+        
+        var invite = inviteService.findById(inviteId);
+        var participant = invite.getCandidate();
+    
+        participant.removeInvite(invite);
+    
+        participantService.save(participant);
+        inviteService.remove(invite);
+    
+        return Response.successResponse(Response.SUCCESS_INVITE_REFUSE);
+    }
+    
+    public Response sendInvites(String usernames, String teamId) throws JsonProcessingException {
         
         try {
         
-            var team = repository.findById(teamId).orElseThrow();
-        
             List<String> list = mapper.readValue(usernames, List.class);
-            team.addParticipants(list);
-        
+            
             list.stream()
             .map(Object::toString)
-            .map(participantService::findByOwnerUsername)
-            .peek(participant -> participant.addTeam(team))
-            .forEach(participantService::save);
+            .forEach(candidate -> sendInvite(candidate, teamId));
         }
         catch (NoSuchElementException e) {
     

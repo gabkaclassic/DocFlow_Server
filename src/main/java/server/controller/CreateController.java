@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import server.controller.response.Response;
-import server.entity.Team;
+import server.entity.team.Team;
 import server.entity.process.Process;
 import server.service.ProcessService;
 import server.service.TeamService;

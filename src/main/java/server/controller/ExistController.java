@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import server.controller.response.ExistResponse;
 import server.entity.process.document.DocumentId;
+import server.entity.team.Team;
 import server.service.DocumentService;
 import server.service.ProcessService;
 import server.service.TeamService;
@@ -38,7 +39,7 @@ public class ExistController {
     }
     /**
      * Обработка запроса о существовании команды
-     * @see server.entity.Team
+     * @see Team
      * */
     @GetMapping(value = "/team", produces = MediaType.APPLICATION_JSON_VALUE)
     public ExistResponse teamExists(@RequestParam String title) {

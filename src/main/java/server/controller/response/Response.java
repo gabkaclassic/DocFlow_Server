@@ -24,6 +24,8 @@ public class Response {
     public static final String SUCCESS_LOADING = "Success info loading";
     public static final String SUCCESS_CREATING = "Success creating process";
     public static final String SUCCESS_INVITE = "Success invite";
+    
+    public static final String SUCCESS_INVITE_REFUSE = "Success invite refuse";
     public static final String INVALID_LOGIN_PROCESS = "Invalid login or password";
     public static final String SUCCESS_REGISTRATION = "Registration was finished with success status";
     public static final String USER_ALREADY_EXISTS = "Account with this login already exists";

@@ -56,6 +56,7 @@ public class ParticipantService {
                         )
                         .collect(Collectors.toList())
                 )
+                .invites(participant.getInvites())
                 .build()
                 .status(Response.STATUS_SUCCESS)
                 .message(InfoResponse.SUCCESS_LOADING);

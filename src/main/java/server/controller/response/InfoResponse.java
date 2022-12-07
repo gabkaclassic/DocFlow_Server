@@ -2,7 +2,8 @@ package server.controller.response;
 
 import lombok.Builder;
 import lombok.Data;
-import server.entity.Team;
+import server.entity.team.Invite;
+import server.entity.team.Team;
 import server.entity.process.Participant;
 import server.entity.process.Process;
 
@@ -23,6 +24,8 @@ public class InfoResponse extends Response {
     private Set<Team> teams;
     
     private List<Process> processes;
+    
+    private Set<Invite> invites;
     
     public InfoResponse message(String message) {
         

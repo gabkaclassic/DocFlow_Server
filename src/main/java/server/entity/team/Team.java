@@ -1,4 +1,4 @@
-package server.entity;
+package server.entity.team;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;

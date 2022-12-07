@@ -29,7 +29,19 @@ public class InviteController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Response addParticipantIntoTeam(@RequestParam String username, @RequestParam String teamId) {
         
-        return teamService.addParticipant(username, teamId);
+        return teamService.sendInvite(username, teamId);
+    }
+    
+    @PostMapping(value = "/access", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response accessInvite(@RequestParam Long inviteId) {
+        
+        return teamService.accessInvite(inviteId);
+    }
+    
+    @PostMapping(value = "/refuse", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response refuseInvite(@RequestParam Long inviteId) {
+        
+        return teamService.refuseInvite(inviteId);
     }
     
     /**
@@ -38,15 +50,14 @@ public class InviteController {
     @PostMapping(value = "/many", produces = MediaType.APPLICATION_JSON_VALUE)
     public Response addParticipantsIntoTeam(@RequestParam String usernames, @RequestParam String teamId) throws JsonProcessingException {
         
-        return teamService.addParticipants(usernames, teamId);
+        return teamService.sendInvites(usernames, teamId);
     }
     /**
      * Обработка удаления пользователя из команды
      * */
-    @PostMapping(value = "/refuse", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response refuseInvite(@RequestParam String username, @RequestParam String teamId) {
+    @PostMapping(value = "/kick", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response kickParticipant(@RequestParam String username, @RequestParam String teamId) {
         
         return teamService.removeParticipant(username, teamId);
     }
-    
 }

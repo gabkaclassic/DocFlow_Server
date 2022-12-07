@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import server.controller.response.Response;
-import server.entity.Team;
+import server.entity.team.Team;
 import server.entity.process.Process;
 import server.entity.process.step.Step;
 import server.service.DocumentService;

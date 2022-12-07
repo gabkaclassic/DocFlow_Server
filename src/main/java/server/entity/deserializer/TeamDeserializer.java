@@ -4,8 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import server.entity.Team;
-import server.entity.process.Participant;
+import server.entity.team.Team;
 import server.entity.process.Process;
 import server.util.JSONUtils;
 
