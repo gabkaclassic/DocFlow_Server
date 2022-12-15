@@ -46,8 +46,10 @@ public class TeamService {
         try {
             var teamLeader = participantService.findById(team.getTeamLeaderId()).orElseThrow();
             team.setTeamLeaderId(teamLeader.getId());
+            teamLeader.addTeam(team);
     
             save(team);
+            participantService.save(teamLeader);
         }
         catch (NoSuchElementException e) {
             log.warn("No such team leader exception", e);
@@ -106,7 +108,7 @@ public class TeamService {
         var participant = invite.getCandidate();
     
         participant.removeInvite(invite);
-    
+        
         participantService.save(participant);
         inviteService.remove(invite);
     
