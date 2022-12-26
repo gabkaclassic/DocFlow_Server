@@ -41,7 +41,7 @@ public class DocumentDeserializer extends StdDeserializer<Document> {
                 .map(String::trim)
                 .collect(Collectors.toList())
         );
-        document.getComments().forEach(System.out::println);
+
         document.setResources(Arrays.stream(node.get("resources").toPrettyString()
                         .replace("\"", "")
                         .replace("[", "").replace("]", "")
