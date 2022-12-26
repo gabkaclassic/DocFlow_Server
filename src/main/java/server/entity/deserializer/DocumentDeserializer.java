@@ -9,6 +9,7 @@ import server.entity.process.document.DocumentId;
 import server.util.JSONUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,11 @@ public class DocumentDeserializer extends StdDeserializer<Document> {
         document.setId(JSONUtils.getObject(node, "id", DocumentId.class));
         document.setFile(JSONUtils.getObject(node, "file", byte[].class));
         document.setFormat(node.get("format").textValue());
-        document.setComments(JSONUtils.splitObjects(node, "comments", String.class)
+        document.setComments(Arrays.stream(node.get("comments").toPrettyString()
+                        .replace("\"", "")
+                        .replace("[", "").replace("]", "")
+                        .split(","))
+                .map(String::trim)
                 .collect(Collectors.toList())
         );
         document.getComments().forEach(System.out::println);
