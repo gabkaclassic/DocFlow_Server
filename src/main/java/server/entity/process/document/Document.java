@@ -36,6 +36,7 @@ public class Document implements Serializable {
                     @JoinColumn(name = "title", referencedColumnName = "title")
             }
     )
+    @Column(name = "comment")
     private List<String> comments = new ArrayList<>();
     
     @Column
