@@ -42,7 +42,11 @@ public class DocumentDeserializer extends StdDeserializer<Document> {
                 .collect(Collectors.toList())
         );
         document.getComments().forEach(System.out::println);
-        document.setResources(JSONUtils.splitObjects(node, "resources", String.class)
+        document.setResources(Arrays.stream(node.get("resources").toPrettyString()
+                        .replace("\"", "")
+                        .replace("[", "").replace("]", "")
+                        .split(","))
+                .map(String::trim)
                 .collect(Collectors.toList())
         );
         
