@@ -36,7 +36,7 @@ public class DocumentDeserializer extends StdDeserializer<Document> {
         document.setComments(JSONUtils.splitObjects(node, "comments", String.class)
                 .collect(Collectors.toList())
         );
-        
+        document.getComments().forEach(System.out::println);
         document.setResources(JSONUtils.splitObjects(node, "resources", String.class)
                 .collect(Collectors.toList())
         );
