@@ -92,6 +92,18 @@ public class StepService {
                             )
                     ).executeUpdate();
                     session.getTransaction().commit();
+                    for(var comment: doc.getComments()) {
+
+                        session.beginTransaction();
+                        session.createNativeQuery(
+                          String.format("insert into documents_comments" +
+                                  " (step_title, title, comments) values" +
+                                  " (%s, %s, %s)",
+                                  step.getTitle(), doc.getTitle(), comment
+                          )
+                        ).executeUpdate();
+                        session.getTransaction().commit();
+                    }
                 } catch (Exception e) {
                     log.error("Error in the process of update documents", e);
                     return Response.errorResponse(Response.SERVER_ERROR);
