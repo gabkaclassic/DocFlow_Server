@@ -46,9 +46,7 @@ public class DocumentDeserializer extends StdDeserializer<Document> {
                         .replace("\"", "")
                         .replace("[", "").replace("]", "")
                         .split(","))
-                .map(String::trim)
-                .collect(Collectors.toList())
-        );
+                .map(String::trim).collect(Collectors.toList()));
         
         return document;
     }
